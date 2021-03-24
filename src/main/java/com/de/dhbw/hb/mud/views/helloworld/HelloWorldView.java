@@ -16,7 +16,7 @@ public class HelloWorldView extends Div {
 
     public HelloWorldView() {
         addClassName("hello-world-view");
-        add(new Text("Someone"));
+        add(new Text("NoOne"));
     }
 
 }
