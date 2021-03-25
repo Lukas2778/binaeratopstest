@@ -1,7 +1,8 @@
 package com.de.dhbw.hb.mud.views.main;
 
-import java.util.Optional;
-
+import com.de.dhbw.hb.mud.views.TestView;
+import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -9,22 +10,18 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
-import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
-import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.server.PWA;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.PageTitle;
-import com.de.dhbw.hb.mud.views.main.MainView;
-import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
-import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.vaadin.flow.router.RouterLink;
+
+import java.util.Optional;
 
 /**
  * The main view is a top-level placeholder for other views.
@@ -84,7 +81,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class)};
+        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),createTab("Testformular", TestView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
