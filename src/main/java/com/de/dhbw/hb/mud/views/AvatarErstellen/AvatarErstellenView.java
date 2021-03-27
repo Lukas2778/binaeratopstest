@@ -1,4 +1,4 @@
-package com.de.dhbw.hb.mud.views.AvatarErstellen;
+package com.de.dhbw.hb.mud.views.AvatarKonfigurator;
 
 import com.de.dhbw.hb.mud.model.Avatar.Avatar;
 import com.de.dhbw.hb.mud.model.Avatar.Gender;
