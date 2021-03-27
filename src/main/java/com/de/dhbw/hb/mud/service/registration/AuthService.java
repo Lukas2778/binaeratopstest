@@ -4,9 +4,13 @@ import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.repository.UserRepository;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
+import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
+import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
+import com.de.dhbw.hb.mud.views.lobby.Lobby;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.VaadinSession;
@@ -55,7 +59,10 @@ public class AuthService {
         routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
         routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
-
+        routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", AvatarErstellenView.class));
+        routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
+        routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
+        routes.add(new AuthorizedRoute("lobby","Lobby", Lobby.class));
 
         return routes;
     };
