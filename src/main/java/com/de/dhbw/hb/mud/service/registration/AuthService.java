@@ -4,7 +4,6 @@ import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.repository.UserRepository;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
-import com.de.dhbw.hb.mud.views.AvatarErstellen.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
