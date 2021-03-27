@@ -16,7 +16,7 @@ public class Dungeon {
     @GeneratedValue
     private Long id;
 
-    private final Long creatorID;
+    private Long creatorID;
 
     private String name;
 
@@ -30,7 +30,7 @@ public class Dungeon {
     private List<Avatar> avatars;
 
     //private Map map;
-
+    public Dungeon(){}
     public Dungeon(String name) {
         this.name = name;
         this.creatorID = VaadinSession.getCurrent().getAttribute(UserDto.class).getId();
