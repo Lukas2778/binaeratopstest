@@ -2,7 +2,6 @@ package com.de.dhbw.hb.mud.views;
 
 import com.de.dhbw.hb.mud.model.TestClass;
 import com.de.dhbw.hb.mud.repository.TestClassRepository;
-import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -11,10 +10,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "test", layout = MainView.class)
+//@Route(value = "test", layout = MainView.class)
 @PageTitle("Test")
 public class TestView extends VerticalLayout {
 
@@ -47,8 +45,6 @@ public class TestView extends VerticalLayout {
                 new HorizontalLayout(new Text("Alter:"),age),
                 new HorizontalLayout(new Text("Größe:"),size),
                 commit);
-
-
     }
 
 }

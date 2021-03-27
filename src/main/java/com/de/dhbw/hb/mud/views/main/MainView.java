@@ -2,7 +2,6 @@ package com.de.dhbw.hb.mud.views.main;
 
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
-import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -10,6 +9,7 @@ import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -26,6 +26,8 @@ import java.util.Optional;
 /**
  * The main view is a top-level placeholder for other views.
  */
+
+
 @CssImport("./views/main/main-view.css")
 //@PWA(name = "Binäratops", shortName = "Binäratops", enableInstallPrompt = false)
 @JsModule("./styles/shared-styles.js")
@@ -34,11 +36,14 @@ public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
 
+
+
     public MainView() {
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
+
     }
 
     private Component createHeaderContent() {
@@ -52,6 +57,7 @@ public class MainView extends AppLayout {
         viewTitle = new H1();
         layout.add(viewTitle);
         layout.add(new Avatar());
+        layout.add(new Anchor("/logout","Log out    "));
         return layout;
     }
 
@@ -81,7 +87,17 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),createTab("Testformular", TestView.class)};
+        //@TODO automatisch tab generierung
+        //UserDto user = VaadinSession.getCurrent().getAttribute(UserDto.class);
+        //return authService.getRouts().stream()
+        //.map(route->
+        //        createTab(route.getName(),route.getView()))
+        //        .toArray(Component[]::new);
+        return new Tab[] {
+            createTab("about", AboutView.class),
+            createTab("test", TestView.class)
+        };
+//
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
@@ -99,7 +115,8 @@ public class MainView extends AppLayout {
     }
 
     private Optional<Tab> getTabForComponent(Component component) {
-        return menu.getChildren().filter(tab -> ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
+        return menu.getChildren().filter(tab ->
+                ComponentUtil.getData(tab, Class.class).equals(component.getClass()))
                 .findFirst().map(Tab.class::cast);
     }
 
