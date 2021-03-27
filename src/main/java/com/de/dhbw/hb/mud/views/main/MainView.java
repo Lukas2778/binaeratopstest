@@ -1,5 +1,6 @@
 package com.de.dhbw.hb.mud.views.main;
 
+import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.vaadin.flow.component.Component;
@@ -87,6 +88,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
+
         //@TODO automatisch tab generierung
         //UserDto user = VaadinSession.getCurrent().getAttribute(UserDto.class);
         //return authService.getRouts().stream()
@@ -95,9 +97,9 @@ public class MainView extends AppLayout {
         //        .toArray(Component[]::new);
         return new Tab[] {
             createTab("about", AboutView.class),
-            createTab("test", TestView.class)
+            createTab("test", TestView.class),
+            createTab("Avatar Konfigurieren",AvatarKonfiguratorView.class),
         };
-//
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
