@@ -1,6 +1,7 @@
 package com.de.dhbw.hb.mud.model;
 
 import com.de.dhbw.hb.mud.model.Avatar.Avatar;
+import com.vaadin.flow.server.VaadinSession;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,7 +16,7 @@ public class Dungeon {
     @GeneratedValue
     private Long id;
 
-    private Long creatorID;
+    private final Long creatorID;
 
     private String name;
 
@@ -32,6 +33,7 @@ public class Dungeon {
 
     public Dungeon(String name) {
         this.name = name;
+        this.creatorID = VaadinSession.getCurrent().getAttribute(UserDto.class).getId();
     }
 
     public void addRoom(Room room) {

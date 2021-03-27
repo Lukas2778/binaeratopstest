@@ -56,7 +56,6 @@ public class Room {
 
     public Room(String name, String type, int[] coordinates) {
         this.name = name;
-        this.dungeonID = dungeonID;
         this.type = type;
         this.coordinates = coordinates;
     }

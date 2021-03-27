@@ -88,7 +88,6 @@ public class DungeonView extends VerticalLayout {
         });
 
         commitButton.addClickListener(e->{
-
             Dungeon d = new Dungeon(nameField.getValue());
             repoDungeon.save(d);
             for (Room r : addedRooms) {
