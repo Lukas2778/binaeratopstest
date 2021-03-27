@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TestClassRepository extends CrudRepository<TestClass,Long > {
+public interface TestClassRepository extends CrudRepository<TestClass,Long> {
 
     @Override
     List<TestClass> findAll();
