@@ -1,6 +1,7 @@
 package com.de.dhbw.hb.mud.views.main;
 
-import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarKonfiguratorView;
+import com.de.dhbw.hb.mud.views.AvatarErstellen.AvatarErstellenView;
+import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.vaadin.flow.component.Component;
@@ -98,7 +99,8 @@ public class MainView extends AppLayout {
         return new Tab[] {
             createTab("about", AboutView.class),
             createTab("test", TestView.class),
-            createTab("Avatar Konfigurieren",AvatarKonfiguratorView.class),
+            createTab("Avatar erstellen", AvatarErstellenView.class),
+            createTab("Avatar konfigurieren", AvatarKonfiguratorView.class)
         };
     }
 
