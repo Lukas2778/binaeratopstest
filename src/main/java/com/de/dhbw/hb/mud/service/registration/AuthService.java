@@ -7,6 +7,7 @@ import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
 import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
@@ -57,7 +58,7 @@ public class AuthService {
         routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
         routes.add(new AuthorizedRoute("Konfigurator","Avatar Konfigurieren", AvatarKonfiguratorView.class));
-
+        routes.add(new AuthorizedRoute("dungeon", "Dungeon", DungeonView.class));
 
         return routes;
     };

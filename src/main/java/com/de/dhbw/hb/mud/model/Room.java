@@ -1,7 +1,5 @@
 package com.de.dhbw.hb.mud.model;
 
-import com.de.dhbw.hb.mud.constants.Region;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,7 +8,6 @@ import java.util.List;
 
 @Entity(name ="room")
 public class Room {
-    // TODO: implementieren
 
     @Id
     @GeneratedValue
@@ -18,8 +15,17 @@ public class Room {
 
     private String name;
 
-    @Transient
-    private Region type;
+    private Long dungeonID;
+
+    private String type;
+
+    public Long getDungeonID() {
+        return dungeonID;
+    }
+
+    public void setDungeonID(Long dungeonID) {
+        this.dungeonID = dungeonID;
+    }
 
     @Transient
     private List<Item> items;
@@ -30,26 +36,28 @@ public class Room {
     private boolean questAvailable;
 
     private int northRoomID;
-
     private int eastRoomID;
-
     private int southRoomID;
-
     private int westRoomID;
+
+    @Transient
+    private Room northRoom;
+    @Transient
+    private Room eastRoom;
+    @Transient
+    private Room southRoom;
+    @Transient
+    private Room westRoom;
 
     @Transient
     private int[] coordinates;
 
-    public Room(String name, Region type, List<Item> items, List<NPC> npcs, boolean questAvailable, int northRoomID, int eastRoomID, int southRoomID, int westRoomID, int[] coordinates) {
+    public Room() {}
+
+    public Room(String name, String type, int[] coordinates) {
         this.name = name;
+        this.dungeonID = dungeonID;
         this.type = type;
-        this.items = items;
-        this.npcs = npcs;
-        this.questAvailable = questAvailable;
-        this.northRoomID = northRoomID;
-        this.eastRoomID = eastRoomID;
-        this.southRoomID = southRoomID;
-        this.westRoomID = westRoomID;
         this.coordinates = coordinates;
     }
 
@@ -67,14 +75,6 @@ public class Room {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Region getType() {
-        return type;
-    }
-
-    public void setType(Region type) {
-        this.type = type;
     }
 
     public List<Item> getItems() {
@@ -131,6 +131,38 @@ public class Room {
 
     public void setWestRoomID(int westRoomID) {
         this.westRoomID = westRoomID;
+    }
+
+    public Room getNorthRoom() {
+        return northRoom;
+    }
+
+    public void setNorthRoom(Room northRoom) {
+        this.northRoom = northRoom;
+    }
+
+    public Room getEastRoom() {
+        return eastRoom;
+    }
+
+    public void setEastRoom(Room eastRoom) {
+        this.eastRoom = eastRoom;
+    }
+
+    public Room getSouthRoom() {
+        return southRoom;
+    }
+
+    public void setSouthRoom(Room southRoom) {
+        this.southRoom = southRoom;
+    }
+
+    public Room getWestRoom() {
+        return westRoom;
+    }
+
+    public void setWestRoom(Room westRoom) {
+        this.westRoom = westRoom;
     }
 
     public int[] getCoordinates() {

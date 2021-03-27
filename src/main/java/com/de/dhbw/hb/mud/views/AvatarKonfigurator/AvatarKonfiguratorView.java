@@ -4,24 +4,16 @@ import com.de.dhbw.hb.mud.model.Avatar.Avatar;
 import com.de.dhbw.hb.mud.model.Avatar.Gender;
 import com.de.dhbw.hb.mud.model.Avatar.Race;
 import com.de.dhbw.hb.mud.model.Avatar.Role;
-import com.de.dhbw.hb.mud.model.TestClass;
 import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
-import com.de.dhbw.hb.mud.repository.TestClassRepository;
-import com.de.dhbw.hb.mud.views.main.MainView;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-//@Route(value = "Konfigurator", layout = MainView.class)
 @PageTitle("Avatar Konfigurieren")
 public class AvatarKonfiguratorView extends VerticalLayout {
 

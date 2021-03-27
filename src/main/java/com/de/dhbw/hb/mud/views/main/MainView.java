@@ -1,8 +1,9 @@
 package com.de.dhbw.hb.mud.views.main;
 
-import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
+import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -27,8 +28,6 @@ import java.util.Optional;
 /**
  * The main view is a top-level placeholder for other views.
  */
-
-
 @CssImport("./views/main/main-view.css")
 //@PWA(name = "Binäratops", shortName = "Binäratops", enableInstallPrompt = false)
 @JsModule("./styles/shared-styles.js")
@@ -37,14 +36,11 @@ public class MainView extends AppLayout {
     private final Tabs menu;
     private H1 viewTitle;
 
-
-
     public MainView() {
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         menu = createMenu();
         addToDrawer(createDrawerContent(menu));
-
     }
 
     private Component createHeaderContent() {
@@ -95,10 +91,11 @@ public class MainView extends AppLayout {
         //.map(route->
         //        createTab(route.getName(),route.getView()))
         //        .toArray(Component[]::new);
-        return new Tab[] {
-            createTab("about", AboutView.class),
-            createTab("test", TestView.class),
-            createTab("Avatar Konfigurieren",AvatarKonfiguratorView.class),
+        return new Tab[]{
+                createTab("Hello World", HelloWorldView.class),
+                createTab("About", AboutView.class),
+                createTab("Testformular", TestView.class),
+                createTab("Dungeon", DungeonView.class)
         };
     }
 
