@@ -36,7 +36,7 @@ public class UserDto {
     public UserDto(@NotEmpty String name, @NotEmpty @Email String eMail, @NotEmpty String password) {
         this.name = name;
         this.eMail = eMail;
-        this.passwordSalt = RandomStringUtils.random(32);
+        this.passwordSalt = "Ti";
         //this.passwordHash = DigestUtils.sha1Hex(password + passwordSalt);
         this.passwordHash=password;
     }

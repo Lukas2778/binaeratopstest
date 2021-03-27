@@ -21,7 +21,7 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route(value = "Konfigurator", layout = MainView.class)
+//@Route(value = "Konfigurator", layout = MainView.class)
 @PageTitle("Avatar Konfigurieren")
 public class AvatarKonfiguratorView extends VerticalLayout {
 
