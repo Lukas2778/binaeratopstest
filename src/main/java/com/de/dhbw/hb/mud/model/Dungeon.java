@@ -1,5 +1,7 @@
 package com.de.dhbw.hb.mud.model;
 
+import com.de.dhbw.hb.mud.model.Avatar.Avatar;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;

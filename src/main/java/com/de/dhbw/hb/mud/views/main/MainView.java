@@ -1,5 +1,6 @@
 package com.de.dhbw.hb.mud.views.main;
 
+import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
@@ -81,7 +82,7 @@ public class MainView extends AppLayout {
     }
 
     private Component[] createMenuItems() {
-        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),createTab("Testformular", TestView.class)};
+        return new Tab[]{createTab("Hello World", HelloWorldView.class), createTab("About", AboutView.class),createTab("Testformular", TestView.class), createTab("Avatar Konfigurieren",AvatarKonfiguratorView.class)};
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
