@@ -1,7 +1,7 @@
 package com.de.dhbw.hb.mud.model;
 
 
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -38,13 +38,13 @@ public class UserDto {
         this.eMail = eMail;
         this.passwordSalt = "Ti";
         //this.passwordHash = DigestUtils.sha1Hex(password + passwordSalt);
-        this.passwordHash=password;
+        this.passwordHash= DigestUtils.sha1Hex(password);
     }
 
 
     public boolean checkPassword(String password) {
         //return DigestUtils.sha1Hex(password + passwordSalt).equals(passwordHash);
-        return password.equals(passwordHash);
+        return DigestUtils.sha1Hex(password).equals(passwordHash);
     }
 
     public long getId() {

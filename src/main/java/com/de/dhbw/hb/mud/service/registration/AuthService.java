@@ -3,12 +3,14 @@ package com.de.dhbw.hb.mud.service.registration;
 import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.repository.UserRepository;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
+import com.de.dhbw.hb.mud.service.registration.exception.IllegalMailException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
 import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
+import com.de.dhbw.hb.mud.views.game.GameView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.de.dhbw.hb.mud.views.lobby.Lobby;
 import com.de.dhbw.hb.mud.views.main.MainView;
@@ -63,11 +65,11 @@ public class AuthService {
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", Lobby.class));
-
+        routes.add(new AuthorizedRoute("game", "Game", GameView.class));
         return routes;
     };
 
-    public void register(String username, String password, String eMail) throws RegisterException {
+    public void register(String username, String password, String eMail) throws RegisterException, IllegalMailException {
         List<UserDto> list =repo.findAll();
         for (UserDto user:
              list) {
@@ -75,6 +77,11 @@ public class AuthService {
                 throw new RegisterException();
             }
         }
-        repo.save(new UserDto(username,eMail,password));
+        try {
+            repo.save(new UserDto(username,eMail,password));
+        }catch (Exception e){
+            throw  new IllegalMailException();
+        }
+
     }
 }
