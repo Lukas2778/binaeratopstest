@@ -66,9 +66,13 @@ askUsername();
 
      expand(messageList);
      messages.subscribe(message-> {
-         messageList.add(
-                 new Paragraph(message.getFrom()+": " +
-                         message.getMessage())
+         getUI().ifPresent(ui->
+                 ui.access(()->
+                   messageList.add(
+                   new Paragraph(message.getFrom()+": " +
+                     message.getMessage())
+                 ))
+
          );
      });
     }
