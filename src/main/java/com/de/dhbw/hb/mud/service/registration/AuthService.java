@@ -9,6 +9,7 @@ import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.game.GameView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
@@ -61,6 +62,7 @@ public class AuthService {
         routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
         routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
+        routes.add(new AuthorizedRoute("chat","Hello World", ChatView.class));
         routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", AvatarErstellenView.class));
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));

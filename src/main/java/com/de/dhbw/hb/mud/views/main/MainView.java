@@ -2,6 +2,7 @@ package com.de.dhbw.hb.mud.views.main;
 
 import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
+import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.lobby.Lobby;
@@ -18,6 +19,7 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.TabsVariant;
@@ -34,6 +36,7 @@ import java.util.Optional;
 @CssImport("./views/main/main-view.css")
 //@PWA(name = "Binäratops", shortName = "Binäratops", enableInstallPrompt = false)
 @JsModule("./styles/shared-styles.js")
+@Push
 public class MainView extends AppLayout {
 
     private final Tabs menu;
@@ -102,8 +105,10 @@ public class MainView extends AppLayout {
                 createTab("About", AboutView.class),
                 createTab("Testformular", TestView.class),
                 createTab("Dungeon", DungeonView.class),
+                createTab("CHAT", ChatView.class),
                 createTab("Spiel beitreten", Lobby.class)
         };
+//
     }
 
     private static Tab createTab(String text, Class<? extends Component> navigationTarget) {
