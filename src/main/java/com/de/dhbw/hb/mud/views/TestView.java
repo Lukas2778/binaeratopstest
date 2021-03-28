@@ -27,8 +27,6 @@ public class TestView extends VerticalLayout {
 
     public TestView(TestClassRepository repo){
         this.repo = repo;
-
-
         commit.addClickListener(e->{
             repo.save(new TestClass(name.getValue(),race.getValue(),age.getValue(),size.getValue()));
             name.clear();

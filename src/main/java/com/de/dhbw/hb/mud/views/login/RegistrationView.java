@@ -1,6 +1,7 @@
 package com.de.dhbw.hb.mud.views.login;
 
 import com.de.dhbw.hb.mud.service.registration.AuthService;
+import com.de.dhbw.hb.mud.service.registration.exception.IllegalMailException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -59,6 +60,8 @@ public class RegistrationView extends VerticalLayout {
                 UI.getCurrent().getPage().setLocation("login");
             } catch (RegisterException e) {
                 Notification.show("der Name ist bereits vergeben");
+            } catch (IllegalMailException e){
+                Notification.show("Die E-Mail Adresse ist ungültig");
             }
 
         }

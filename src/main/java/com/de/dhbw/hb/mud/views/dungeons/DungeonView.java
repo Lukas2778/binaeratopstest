@@ -18,9 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 
-/**
- * The main view is a top-level placeholder for other views.
- */
 @PageTitle("Dungeon")
 public class DungeonView extends VerticalLayout {
 
@@ -31,16 +28,16 @@ public class DungeonView extends VerticalLayout {
     private final RoomRepository repoRoom;
 
     private final TextField nameField =new TextField("Name:");
-    private final Button addRoomButton =new Button("Add a room");
+    private final Button addRoomButton =new Button("Erstelle einen Raum");
     private final Dialog newRoomDialog = new Dialog();
 
-    private final Button commitButton =new Button("Commit");
+    private final Button commitButton =new Button("Hinzufügen");
 
     private final TextField nameRoomField = new TextField("Name:");
-    private final TextField selectRegionField = new TextField();
-    private final NumberField xCoordinateField = new NumberField("x Coordinate");
-    private final NumberField yCoordinateField = new NumberField("y Coordinate");
-    private final Button commitRoomButton = new Button("Commit");
+    private final TextField selectRegionField = new TextField("Region:");
+    private final NumberField xCoordinateField = new NumberField("x Koordinate");
+    private final NumberField yCoordinateField = new NumberField("y Koordinate");
+    private final Button commitRoomButton = new Button("Hinzufügen");
 
     private final ArrayList<Room> addedRooms = new ArrayList<>();
 
@@ -50,7 +47,7 @@ public class DungeonView extends VerticalLayout {
 
         newRoomDialog.add(
                 new VerticalLayout(
-                        new Text ("Create your Room!"),
+                        new Text ("Erstelle deinen Raum!"),
                         nameRoomField,
                         selectRegionField,
                         xCoordinateField,
@@ -61,43 +58,82 @@ public class DungeonView extends VerticalLayout {
                 )
         );
 
-        add(new H1("Create your Dungeon"),
+        add(new H1("Erstelle deinen Dungeon"),
                 nameField,
                 addRoomButton,
                 commitButton);
 
         addListeners();
+        initializeSettings();
+    }
+
+    private void initializeSettings() {
+        nameRoomField.setHelperText("z.B.: Wald der Finsternis");
+        selectRegionField.setHelperText("z.B.: Wald");
     }
 
     private void addListeners() {
         addRoomButton.addClickListener(e-> newRoomDialog.open());
 
         commitRoomButton.addClickListener(e->{
-            int[] coordinates = new int[2];
-            coordinates[0] = xCoordinateField.getValue().intValue();
-            coordinates[1] = yCoordinateField.getValue().intValue();
+            if (validateRoom()) {
+                int[] coordinates = new int[2];
+                coordinates[0] = xCoordinateField.getValue().intValue();
+                coordinates[1] = yCoordinateField.getValue().intValue();
 
-            Room r = new Room(nameRoomField.getValue(), selectRegionField.getValue(), coordinates);
-            Notification.show("Added!");
-            addedRooms.add(r);
-            repoRoom.save(r);
-            nameRoomField.clear();
-            selectRegionField.clear();
-            xCoordinateField.clear();
-            yCoordinateField.clear();
+                Room r = new Room(nameRoomField.getValue(), selectRegionField.getValue(), coordinates);
+                Notification.show("Raum wurde hinzugefügt");
+                addedRooms.add(r);
+                repoRoom.save(r);
+                nameRoomField.clear();
+                selectRegionField.clear();
+                xCoordinateField.clear();
+                yCoordinateField.clear();
+            } else {
+                Notification.show("Bitte füllen sie alle Felder aus");
+            }
         });
 
         commitButton.addClickListener(e->{
-            Dungeon d = new Dungeon(nameField.getValue());
-            repoDungeon.save(d);
-            for (Room r : addedRooms) {
-                r.setDungeonID(d.getId());
-                repoRoom.save(r);
+            if (validateDungeon()) {
+                Dungeon d = new Dungeon(nameField.getValue());
+                repoDungeon.save(d);
+                for (Room r : addedRooms) {
+                    r.setDungeonID(d.getId());
+                    repoRoom.save(r);
+                }
+                Notification.show("Der Dungeon wurde erstellt");
+                nameField.clear();
+                addedRooms.clear();
+            } else {
+                Notification.show("Bitte geben sie einen Namen ein");
             }
-            Notification.show("Dungeon created!");
-            nameField.clear();
-            addedRooms.clear();
         });
+    }
+
+    private boolean validateDungeon() {
+        if (nameField.isEmpty()) {
+            nameField.focus();
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateRoom() {
+        if (nameRoomField.isEmpty()) {
+            nameRoomField.focus();
+            return false;
+        }else if (selectRegionField.isEmpty()) {
+            selectRegionField.focus();
+            return false;
+        }else if (xCoordinateField.isEmpty()) {
+            xCoordinateField.focus();
+            return false;
+        }else if (yCoordinateField.isEmpty()) {
+            yCoordinateField.focus();
+            return false;
+        }
+        return true;
     }
 }
 
