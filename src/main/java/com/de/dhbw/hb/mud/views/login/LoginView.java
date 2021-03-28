@@ -3,6 +3,7 @@ package com.de.dhbw.hb.mud.views.login;
 import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.service.registration.AuthService;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H1;
@@ -23,11 +24,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 @PageTitle("login | Binäratops")
 public class LoginView extends VerticalLayout {
 
-    private AuthService authService;
-
     LoginForm login = new LoginForm();
 
     public LoginView(@Autowired AuthService authService) {
+
+        if (VaadinSession.getCurrent().getAttribute(UserDto.class) != null){
+            Notification.show("Sie sind bereits Angemeldet!");
+            UI.getCurrent().navigate("about");
+        }
+
         addClassName("login-view");
         setSizeFull();
 
@@ -51,13 +56,14 @@ public class LoginView extends VerticalLayout {
                 UI.getCurrent().navigate("about");
 
             } catch (AuthException authException) {
-                Notification.show("fehler bei der Anmeldung. Prüfen Sie ihre Daten!");
+                Notification.show("Fehler bei der Anmeldung. Prüfen Sie ihre Daten!");
             }
 
         });
 
         add(
-                new H1("Binäratops dungeon login"),
+                new H1("Binäratops Dungeon Anmeldung"),
+                new Text("Willkommen zu unserem Projekt."),
                 name,
                 passwordField,
                 logInButton,
