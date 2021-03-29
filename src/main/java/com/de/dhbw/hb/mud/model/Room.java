@@ -19,13 +19,7 @@ public class Room {
 
     private String type;
 
-    public Long getDungeonID() {
-        return dungeonID;
-    }
-
-    public void setDungeonID(Long dungeonID) {
-        this.dungeonID = dungeonID;
-    }
+    private String roomDescription;
 
     @Transient
     private List<Item> items;
@@ -35,10 +29,10 @@ public class Room {
 
     private boolean questAvailable;
 
-    private int northRoomID;
-    private int eastRoomID;
-    private int southRoomID;
-    private int westRoomID;
+    private Long northRoomID;
+    private Long eastRoomID;
+    private Long southRoomID;
+    private Long westRoomID;
 
     @Transient
     private Room northRoom;
@@ -76,6 +70,22 @@ public class Room {
         this.name = name;
     }
 
+    public Long getDungeonID() {
+        return dungeonID;
+    }
+
+    public void setDungeonID(Long dungeonID) {
+        this.dungeonID = dungeonID;
+    }
+
+    public String getRoomDescription() {
+        return roomDescription;
+    }
+
+    public void setRoomDescription(String roomDescription) {
+        this.roomDescription = roomDescription;
+    }
+
     public List<Item> getItems() {
         return items;
     }
@@ -100,35 +110,35 @@ public class Room {
         this.questAvailable = questAvailable;
     }
 
-    public int getNorthRoomID() {
+    public Long getNorthRoomID() {
         return northRoomID;
     }
 
-    public void setNorthRoomID(int northRoomID) {
+    public void setNorthRoomID(Long northRoomID) {
         this.northRoomID = northRoomID;
     }
 
-    public int getEastRoomID() {
+    public Long getEastRoomID() {
         return eastRoomID;
     }
 
-    public void setEastRoomID(int eastRoomID) {
+    public void setEastRoomID(Long eastRoomID) {
         this.eastRoomID = eastRoomID;
     }
 
-    public int getSouthRoomID() {
+    public Long getSouthRoomID() {
         return southRoomID;
     }
 
-    public void setSouthRoomID(int southRoomID) {
+    public void setSouthRoomID(Long southRoomID) {
         this.southRoomID = southRoomID;
     }
 
-    public int getWestRoomID() {
+    public Long getWestRoomID() {
         return westRoomID;
     }
 
-    public void setWestRoomID(int westRoomID) {
+    public void setWestRoomID(Long westRoomID) {
         this.westRoomID = westRoomID;
     }
 
