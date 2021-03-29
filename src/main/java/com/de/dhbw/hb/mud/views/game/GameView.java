@@ -31,6 +31,7 @@ public class GameView extends VerticalLayout {
         setSizeFull();
 
 
+
         Label secondLabel = new Label("Platzhalter für eine Karte des Dungeons");
         Label thirdLabel = new Label("Platzhalter für Steuerungselemente");
 
