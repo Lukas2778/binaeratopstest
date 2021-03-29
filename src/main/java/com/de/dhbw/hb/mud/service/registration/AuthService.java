@@ -11,6 +11,7 @@ import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.game.GameView;
+import com.de.dhbw.hb.mud.views.game.GameViewMaster;
 import com.de.dhbw.hb.mud.views.lobby.Lobby;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
@@ -67,6 +68,8 @@ public class AuthService {
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", Lobby.class));
         routes.add(new AuthorizedRoute("game", "Game", GameView.class));
+        routes.add(new AuthorizedRoute("gamemaster", "Game", GameViewMaster.class));
+
         return routes;
     }
 

@@ -29,7 +29,7 @@ public class LoginView extends VerticalLayout {
     public LoginView(@Autowired AuthService authService) {
 
         if (VaadinSession.getCurrent().getAttribute(UserDto.class) != null){
-            Notification.show("Sie sind bereits Angemeldet!");
+            Notification.show("Sie sind bereits angemeldet!");
             UI.getCurrent().navigate("about");
         }
 

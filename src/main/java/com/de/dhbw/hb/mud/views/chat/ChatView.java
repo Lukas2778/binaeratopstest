@@ -29,7 +29,7 @@ public class ChatView extends Div {
 
     private void askUsername()  {
         HorizontalLayout layout = new HorizontalLayout();
-        TextField usernameField = new TextField();
+        TextField usernameField = new TextField("Name festlegen");
         Button startButton = new Button("Start chat");
         layout.add(usernameField, startButton);
         startButton.addClickListener(click -> {

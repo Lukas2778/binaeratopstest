@@ -40,17 +40,16 @@ public class ChatComponent extends VerticalLayout {
         add(messageList, createInputLayout());
 
         expand(messageList);
-        messages.subscribe(message -> {
-            getUI().ifPresent(ui ->
-                    ui.access(() ->
-                            messageList.add(
-                                    new Paragraph(message.getFrom() + ": " +
-                                            message.getMessage())
-                            ))
+        messages.subscribe(message -> getUI().ifPresent(ui ->
+                ui.access(() ->
+                        messageList.add(
+                                new Paragraph(message.getFrom() + ": " +
+                                        message.getMessage())
+                        ))
 
-            );
-        });
+        ));
     }
+
 
 
     private Component createInputLayout() {

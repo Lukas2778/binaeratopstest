@@ -7,6 +7,8 @@ import javax.persistence.Id;
 @Entity(name ="test_table")
 public class TestClass {
 
+
+
     @Id
     @GeneratedValue
     private Long id;
