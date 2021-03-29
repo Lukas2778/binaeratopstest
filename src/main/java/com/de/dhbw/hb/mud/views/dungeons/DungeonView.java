@@ -136,16 +136,20 @@ public class DungeonView extends VerticalLayout {
             Room r = layoutToRoom.get(Integer.parseInt(((TextField) components[0]).getValue()));
 
             if (!((ComboBox<String>) components[2]).isEmpty()) {
-                r.setNorthRoomID(Long.parseLong(((ComboBox<String>) components[2]).getValue()));
+                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[2]).getValue())).getId();
+                r.setNorthRoomID(id);
             }
             if (!((ComboBox<String>) components[3]).isEmpty()) {
-                r.setSouthRoomID(Long.parseLong(((ComboBox<String>) components[3]).getValue()));
+                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[3]).getValue())).getId();
+                r.setSouthRoomID(id);
             }
             if (!((ComboBox<String>) components[4]).isEmpty()) {
-                r.setWestRoomID(Long.parseLong(((ComboBox<String>) components[4]).getValue()));
+                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[4]).getValue())).getId();
+                r.setWestRoomID(id);
             }
             if (!((ComboBox<String>) components[5]).isEmpty()) {
-                r.setEastRoomID(Long.parseLong(((ComboBox<String>) components[5]).getValue()));
+                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[5]).getValue())).getId();
+                r.setEastRoomID(id);
             }
             repoRoom.save(r);
         }
