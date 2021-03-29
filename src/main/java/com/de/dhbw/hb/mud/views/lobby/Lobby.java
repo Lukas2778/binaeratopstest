@@ -1,20 +1,12 @@
 package com.de.dhbw.hb.mud.views.lobby;
 
-import ch.qos.logback.core.status.Status;
 import com.de.dhbw.hb.mud.model.Dungeon;
-import com.de.dhbw.hb.mud.repository.DungeonRepository;
 import com.de.dhbw.hb.mud.service.registration.DungeonService;
-import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.EnumSet;
 
 //@Route(value = "lobby", layout = MainView.class)
 @PageTitle("Lobby")
