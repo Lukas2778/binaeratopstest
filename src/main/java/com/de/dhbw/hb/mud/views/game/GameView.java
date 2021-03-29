@@ -7,6 +7,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -29,25 +30,31 @@ public class GameView extends VerticalLayout {
     public GameView(UnicastProcessor<ChatMessage> publisher,
                     Flux<ChatMessage> messages) {
 
-        TextField role=new TextField("Rolle");
-        role.addThemeVariants(TextFieldVariant.LUMO_ALIGN_CENTER);
+
 
         chat =new ChatComponent(publisher,messages,true);
 
-        //Später mit dem Parameter Dungeonmaster ändern
+        //TODO Später mit dem Parameter Dungeonmaster ändern
+
+        Div controllsView=new Div();
         if(true){
             chat.setUsername("Dungeon Master");
+            TextField role=new TextField("Rolle");
+            role.addThemeVariants(TextFieldVariant.LUMO_ALIGN_CENTER);
+            role.setValue(chat.getUsername());
+            role.addKeyPressListener(Key.ENTER, e -> {
+                chat.setUsername(role.getValue());
+                //publisher.onNext(new ChatMessage("TestUsername", "Hallo"));
+
+            });
+
+            controllsView.add(role);
+
         } else{
             chat.setUsername(VaadinSession.getCurrent().getAttribute(UserDto.class).getName());
         }
 
-        role.setValue(chat.getUsername());
-        role.addKeyPressListener(Key.ENTER, e -> {
-            chat.setUsername(role.getValue());
-            publisher.onNext(new ChatMessage("TestUsername", "Hallo"));
 
-
-        });
 
         setSizeFull();
 
@@ -60,7 +67,7 @@ public class GameView extends VerticalLayout {
         SplitLayout innerLayout = new SplitLayout();
         innerLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         innerLayout.addToPrimary(secondLabel);
-        innerLayout.addToSecondary(role);
+        innerLayout.addToSecondary(controllsView);
         innerLayout.setSizeFull();
 
         SplitLayout layout = new SplitLayout();
