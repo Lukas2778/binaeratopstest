@@ -12,6 +12,7 @@ import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -42,7 +43,8 @@ public class RegistrationView extends VerticalLayout {
                );
         add(
                 new H1("Registrierung bei Binäratops"),
-                name,eMail,password1,password2,submitRegistration
+                name,eMail,password1,password2,submitRegistration,
+                new RouterLink("Anmeldung",LoginView.class)
 
         );
     }
@@ -63,8 +65,8 @@ public class RegistrationView extends VerticalLayout {
             } catch (IllegalMailException e){
                 Notification.show("Die E-Mail Adresse ist ungültig");
             }
-
         }
+
     }
 
 
