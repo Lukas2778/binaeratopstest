@@ -1,17 +1,19 @@
 package com.de.dhbw.hb.mud.views.dungeons;
 
-import com.de.dhbw.hb.mud.model.Dungeon;
-import com.de.dhbw.hb.mud.model.Room;
-import com.de.dhbw.hb.mud.repository.DungeonRepository;
-import com.de.dhbw.hb.mud.repository.RoomRepository;
+import com.de.dhbw.hb.mud.model.*;
+import com.de.dhbw.hb.mud.repository.*;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +30,23 @@ public class DungeonView extends VerticalLayout {
     @Autowired
     private final RoomRepository repoRoom;
 
+    @Autowired
+    private final RaceRepository repoRace;
+
+    @Autowired
+    private final RoleRepository repoRole;
+
+    @Autowired
+    private final NPCRepository repoNPC;
+
+    @Autowired
+    private final ItemRepository repoItem;
+
     private final TextField nameField =new TextField("Name:");
+
+    private final Button raceButton = new Button("Mögliche Rassen");
+
+    private final Button roleButton = new Button("Mögliche Klassen");
 
     private final OrderedList roomsList = new OrderedList();
 
@@ -36,25 +54,52 @@ public class DungeonView extends VerticalLayout {
 
     private final Button commitButton =new Button("Hinzufügen");
 
+    private final Dialog raceDialog = new Dialog();
+
+    private final Dialog roleDialog = new Dialog();
+
     private final ArrayList<Room> addedRooms = new ArrayList<>();
 
     private HashMap<Integer, Room> layoutToRoom = new HashMap<>();
 
+    private HashMap<String, Dialog> idToNPCDialog = new HashMap<>();
+
+    private HashMap<String, Dialog> idToItemDialog = new HashMap<>();
+
     private ArrayList<String> usedIDs = new ArrayList<>();
 
-    public DungeonView(DungeonRepository repoDungeon, RoomRepository repoRoom) {
+    public DungeonView(DungeonRepository repoDungeon, RoomRepository repoRoom, RoleRepository repoRole,
+                       RaceRepository repoRace, NPCRepository repoNPC, ItemRepository repoItem) {
         this.repoDungeon = repoDungeon;
         this.repoRoom = repoRoom;
+        this.repoRole = repoRole;
+        this.repoRace = repoRace;
+        this.repoNPC = repoNPC;
+        this.repoItem = repoItem;
 
         roomsList.add(addRoomButton);
 
-        add(new H1("Erstelle deinen Dungeon"),
-                nameField,
-                roomsList,
-                commitButton);
+        Button addRaceButton = new Button("Rasse hinzufügen");
+        addRaceButton.addClickListener(event -> {
+            raceDialog.add(new HorizontalLayout(new TextField("Rasse:")));
+        });
+
+        Button addRoleButton = new Button("Rolle hinzufügen");
+        addRoleButton.addClickListener(event -> {
+            roleDialog.add(new HorizontalLayout(new TextField("Rolle:")));
+        });
+
+        raceDialog.add(addRaceButton);
+        roleDialog.add(addRoleButton);
 
         addListeners();
         initializeSettings();
+
+        add(new H1("Erstelle deinen Dungeon"),
+                nameField,
+                new HorizontalLayout(raceButton, roleButton),
+                roomsList,
+                commitButton);
     }
 
     private void initializeSettings() {
@@ -85,6 +130,33 @@ public class DungeonView extends VerticalLayout {
         ComboBox<String> west = new ComboBox<>("Westen");
         ComboBox<String> east = new ComboBox<>("Osten");
 
+        Dialog npcDialog = new Dialog();
+        Dialog itemDialog = new Dialog();
+
+        idToNPCDialog.put(iD, npcDialog);
+        idToItemDialog.put(iD, itemDialog);
+
+        Button npcAddButton = new Button("Hinzufügen", e-> {
+            npcDialog.add(new HorizontalLayout(
+                            new TextField("Name:"),
+                            new TextField("Rasse:"),
+                            new TextArea("Beschreibung:")
+                    ));
+        });
+        Button itemAddButton = new Button("Hinzufügen", e-> {
+            itemDialog.add(new HorizontalLayout(
+                    new TextField("Name:"),
+                    new Checkbox("Konsumierbar:"),
+                    new TextArea("Beschreibung:")
+            ));
+        });
+
+        npcDialog.add(npcAddButton);
+        itemDialog.add(itemAddButton);
+
+        Button npcButton = new Button("NPCs", e -> npcDialog.open());
+        Button itemButton = new Button("Items", e -> itemDialog.open());
+
         north.setItems(usedIDs);
         south.setItems(usedIDs);
         west.setItems(usedIDs);
@@ -96,7 +168,9 @@ public class DungeonView extends VerticalLayout {
                 north,
                 south,
                 west,
-                east
+                east,
+                npcButton,
+                itemButton
         );
 
         roomsList.add(horLay);
@@ -151,11 +225,84 @@ public class DungeonView extends VerticalLayout {
                 Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[5]).getValue())).getId();
                 r.setEastRoomID(id);
             }
+            saveNPCs(idToNPCDialog.get(((TextField) components[0]).getValue()), r.getId());
+            saveItems(idToItemDialog.get(((TextField) components[0]).getValue()), r.getId());
             repoRoom.save(r);
         }
     }
 
+    private void saveNPCs(Dialog d, Long roomID) {
+        HorizontalLayout[] layouts = d.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+
+        for (HorizontalLayout layout : layouts) {
+            Component[] components = layout.getChildren().toArray(Component[]::new);
+            NPC npc = new NPC();
+            npc.setName(((TextField) components[0]).getValue());
+            npc.setRace(((TextField) components[1]).getValue());
+            npc.setDescription(((TextArea) components[2]).getValue());
+            npc.setRoomID(roomID);
+            repoNPC.save(npc);
+        }
+    }
+
+    private void saveItems(Dialog d, Long roomID) {
+        HorizontalLayout[] layouts = d.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+
+        for (HorizontalLayout layout : layouts) {
+            Component[] components = layout.getChildren().toArray(Component[]::new);
+            Item item = new Item();
+            item.setName(((TextField) components[0]).getValue());
+            item.setConsumable(((Checkbox) components[1]).getValue());
+            item.setDescription(((TextArea) components[2]).getValue());
+            item.setRoomID(roomID);
+            repoItem.save(item);
+        }
+    }
+
+    private void saveRoles(Long dungeonID) {
+        HorizontalLayout[] layouts = roleDialog.getChildren().
+                filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+        for (HorizontalLayout layout : layouts) {
+            TextField[] fields = layout.getChildren().
+                    filter(component -> component instanceof TextField)
+                    .toArray(TextField[]::new);
+            Role r = new Role();
+            r.setName(fields[0].getValue());
+            r.setDungeonID(dungeonID);
+            repoRole.save(r);
+        }
+    }
+
+    private void saveRaces(Long dungeonID) {
+        HorizontalLayout[] layouts = raceDialog.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+        for (HorizontalLayout layout : layouts) {
+            TextField[] fields = layout.getChildren()
+                    .filter(component -> component instanceof TextField)
+                    .toArray(TextField[]::new);
+            Race r = new Race();
+            r.setName(fields[0].getValue());
+            r.setDungeonID(dungeonID);
+            repoRace.save(r);
+        }
+    }
+
     private void addListeners() {
+
+        raceButton.addClickListener(e -> {
+            raceDialog.open();
+        });
+
+        roleButton.addClickListener(e -> {
+            roleDialog.open();
+        });
+
         addRoomButton.addClickListener(e-> {
             addRoomToLayout();
         });
@@ -166,6 +313,8 @@ public class DungeonView extends VerticalLayout {
                 setNeighbours();
                 Dungeon d = new Dungeon(nameField.getValue());
                 repoDungeon.save(d);
+                saveRoles(d.getId());
+                saveRaces(d.getId());
                 for (Room r : addedRooms) {
                     r.setDungeonID(d.getId());
                     repoRoom.save(r);
@@ -173,6 +322,8 @@ public class DungeonView extends VerticalLayout {
                 Notification.show("Der Dungeon wurde erstellt");
                 nameField.clear();
                 addedRooms.clear();
+
+                UI.getCurrent().navigate("lobby");
             } else {
                 Notification.show("Bitte geben sie einen Namen ein");
             }
