@@ -75,5 +75,7 @@ public class ChatComponent extends VerticalLayout {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public String getUsername() {return username;}
 }
 
