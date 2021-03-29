@@ -7,12 +7,10 @@ import com.de.dhbw.hb.mud.service.registration.exception.IllegalMailException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
 import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
-import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.game.GameView;
-import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.de.dhbw.hb.mud.views.lobby.Lobby;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
@@ -42,6 +40,7 @@ public class AuthService {
 
         if(user!=null && user.checkPassword(password)){
             VaadinSession.getCurrent().setAttribute(UserDto.class, user);
+            VaadinSession.getCurrent().setAttribute("userID", 0L);
             createRouts();
 
         }else{
@@ -59,8 +58,8 @@ public class AuthService {
     public List<AuthorizedRoute> getRouts(){
         ArrayList<AuthorizedRoute> routes =new ArrayList<>();
 
-        routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
-        routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
+        //routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
+        //routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
         routes.add(new AuthorizedRoute("chat","Hello World", ChatView.class));
         routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", AvatarErstellenView.class));
@@ -69,7 +68,7 @@ public class AuthService {
         routes.add(new AuthorizedRoute("lobby","Lobby", Lobby.class));
         routes.add(new AuthorizedRoute("game", "Game", GameView.class));
         return routes;
-    };
+    }
 
     public void register(String username, String password, String eMail) throws RegisterException, IllegalMailException {
         List<UserDto> list =repo.findAll();

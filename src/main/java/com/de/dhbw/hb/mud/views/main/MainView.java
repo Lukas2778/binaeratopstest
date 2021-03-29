@@ -1,9 +1,7 @@
 package com.de.dhbw.hb.mud.views.main;
 
-import com.de.dhbw.hb.mud.views.TestView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
-import com.de.dhbw.hb.mud.views.helloworld.HelloWorldView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.lobby.Lobby;
 import com.vaadin.flow.component.Component;
@@ -101,10 +99,8 @@ public class MainView extends AppLayout {
         //        createTab(route.getName(),route.getView()))
         //        .toArray(Component[]::new);
         return new Tab[]{
-                createTab("Hello World", HelloWorldView.class),
-                createTab("About", AboutView.class),
-                createTab("Testformular", TestView.class),
-                createTab("Dungeon", DungeonView.class),
+                createTab("Über uns", AboutView.class),
+                createTab("Dungeon erstellen", DungeonView.class),
                 createTab("CHAT", ChatView.class),
                 createTab("Spiel beitreten", Lobby.class)
         };
