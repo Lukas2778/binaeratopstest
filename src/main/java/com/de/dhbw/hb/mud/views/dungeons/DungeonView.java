@@ -4,19 +4,20 @@ import com.de.dhbw.hb.mud.model.Dungeon;
 import com.de.dhbw.hb.mud.model.Room;
 import com.de.dhbw.hb.mud.repository.DungeonRepository;
 import com.de.dhbw.hb.mud.repository.RoomRepository;
-import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 @PageTitle("Dungeon")
 public class DungeonView extends VerticalLayout {
@@ -28,39 +29,28 @@ public class DungeonView extends VerticalLayout {
     private final RoomRepository repoRoom;
 
     private final TextField nameField =new TextField("Name:");
-    private final Button addRoomButton =new Button("Erstelle einen Raum");
-    private final Dialog newRoomDialog = new Dialog();
+
+    private final OrderedList roomsList = new OrderedList();
+
+    private Button addRoomButton = new Button("Füge einen Raum hinzu");
 
     private final Button commitButton =new Button("Hinzufügen");
 
-    private final TextField nameRoomField = new TextField("Name:");
-    private final TextField selectRegionField = new TextField("Region:");
-    private final NumberField xCoordinateField = new NumberField("x Koordinate");
-    private final NumberField yCoordinateField = new NumberField("y Koordinate");
-    private final Button commitRoomButton = new Button("Hinzufügen");
-
     private final ArrayList<Room> addedRooms = new ArrayList<>();
+
+    private HashMap<Integer, Room> layoutToRoom = new HashMap<>();
+
+    private ArrayList<String> usedIDs = new ArrayList<>();
 
     public DungeonView(DungeonRepository repoDungeon, RoomRepository repoRoom) {
         this.repoDungeon = repoDungeon;
         this.repoRoom = repoRoom;
 
-        newRoomDialog.add(
-                new VerticalLayout(
-                        new Text ("Erstelle deinen Raum!"),
-                        nameRoomField,
-                        selectRegionField,
-                        xCoordinateField,
-                        yCoordinateField,
-                        new Div(
-                                commitRoomButton
-                        )
-                )
-        );
+        roomsList.add(addRoomButton);
 
         add(new H1("Erstelle deinen Dungeon"),
                 nameField,
-                addRoomButton,
+                roomsList,
                 commitButton);
 
         addListeners();
@@ -68,34 +58,108 @@ public class DungeonView extends VerticalLayout {
     }
 
     private void initializeSettings() {
-        nameRoomField.setHelperText("z.B.: Wald der Finsternis");
-        selectRegionField.setHelperText("z.B.: Wald");
+
+    }
+
+    private String getNewID() {
+        int i = 1;
+        while (usedIDs.contains(String.valueOf(i))) {
+            i++;
+        }
+        String s = String.valueOf(i);
+        usedIDs.add(s);
+        return s;
+    }
+
+    private void addRoomToLayout() {
+        roomsList.remove(addRoomButton);
+
+        TextField number = new TextField("ID");
+        String iD = getNewID();
+        number.setValue(iD);
+        number.setReadOnly(true);
+        number.setWidth("30px");
+        TextField name = new TextField("Name:");
+        ComboBox<String> north = new ComboBox<>("Norden");
+        ComboBox<String> south = new ComboBox<>("Süden");
+        ComboBox<String> west = new ComboBox<>("Westen");
+        ComboBox<String> east = new ComboBox<>("Osten");
+
+        north.setItems(usedIDs);
+        south.setItems(usedIDs);
+        west.setItems(usedIDs);
+        east.setItems(usedIDs);
+
+        HorizontalLayout horLay = new HorizontalLayout(
+                number,
+                name,
+                north,
+                south,
+                west,
+                east
+        );
+
+        roomsList.add(horLay);
+
+        Room r = new Room();
+
+        addedRooms.add(r);
+
+        layoutToRoom.put(Integer.parseInt(iD), r);
+
+        roomsList.add(addRoomButton);
+    }
+
+    private void createRoom(HorizontalLayout horLay) {
+        Component[] components = horLay.getChildren().toArray(Component[]::new);
+
+        Room r = layoutToRoom.get(Integer.parseInt(((TextField) components[0]).getValue()));
+        r.setName(((TextField) components[1]).getValue());
+        repoRoom.save(r);
+    }
+
+    private void createRooms() {
+        roomsList.getChildren().forEach(component -> {
+            if (component instanceof HorizontalLayout){
+                createRoom((HorizontalLayout) component);
+            }
+        });
+    }
+
+    private void setNeighbours() {
+        HorizontalLayout[] layouts = roomsList.getChildren().
+                filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+
+        for (HorizontalLayout l1 : layouts) {
+            Component[] components = l1.getChildren().toArray(Component[]::new);
+            Room r = layoutToRoom.get(Integer.parseInt(((TextField) components[0]).getValue()));
+
+            if (!((ComboBox<String>) components[2]).isEmpty()) {
+                r.setNorthRoomID(Long.parseLong(((ComboBox<String>) components[2]).getValue()));
+            }
+            if (!((ComboBox<String>) components[3]).isEmpty()) {
+                r.setSouthRoomID(Long.parseLong(((ComboBox<String>) components[3]).getValue()));
+            }
+            if (!((ComboBox<String>) components[4]).isEmpty()) {
+                r.setWestRoomID(Long.parseLong(((ComboBox<String>) components[4]).getValue()));
+            }
+            if (!((ComboBox<String>) components[5]).isEmpty()) {
+                r.setEastRoomID(Long.parseLong(((ComboBox<String>) components[5]).getValue()));
+            }
+            repoRoom.save(r);
+        }
     }
 
     private void addListeners() {
-        addRoomButton.addClickListener(e-> newRoomDialog.open());
-
-        commitRoomButton.addClickListener(e->{
-            if (validateRoom()) {
-                int[] coordinates = new int[2];
-                coordinates[0] = xCoordinateField.getValue().intValue();
-                coordinates[1] = yCoordinateField.getValue().intValue();
-
-                Room r = new Room(nameRoomField.getValue(), selectRegionField.getValue(), coordinates);
-                Notification.show("Raum wurde hinzugefügt");
-                addedRooms.add(r);
-                repoRoom.save(r);
-                nameRoomField.clear();
-                selectRegionField.clear();
-                xCoordinateField.clear();
-                yCoordinateField.clear();
-            } else {
-                Notification.show("Bitte füllen sie alle Felder aus");
-            }
+        addRoomButton.addClickListener(e-> {
+            addRoomToLayout();
         });
 
         commitButton.addClickListener(e->{
             if (validateDungeon()) {
+                createRooms();
+                setNeighbours();
                 Dungeon d = new Dungeon(nameField.getValue());
                 repoDungeon.save(d);
                 for (Room r : addedRooms) {
@@ -120,19 +184,6 @@ public class DungeonView extends VerticalLayout {
     }
 
     private boolean validateRoom() {
-        if (nameRoomField.isEmpty()) {
-            nameRoomField.focus();
-            return false;
-        }else if (selectRegionField.isEmpty()) {
-            selectRegionField.focus();
-            return false;
-        }else if (xCoordinateField.isEmpty()) {
-            xCoordinateField.focus();
-            return false;
-        }else if (yCoordinateField.isEmpty()) {
-            yCoordinateField.focus();
-            return false;
-        }
         return true;
     }
 }
