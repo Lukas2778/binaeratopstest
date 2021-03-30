@@ -1,9 +1,11 @@
 package com.de.dhbw.hb.mud.views.chat;
 
 import com.de.dhbw.hb.mud.model.ChatMessage;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -29,9 +31,10 @@ public class ChatView extends Div {
 
     private void askUsername()  {
         HorizontalLayout layout = new HorizontalLayout();
+        Label labelField = new Label("Gib bitte einen Chat Alias ein:");
         TextField usernameField = new TextField();
-        Button startButton = new Button("Start chat");
-        layout.add(usernameField, startButton);
+        Button startButton = new Button("Chat starten");
+        layout.add(labelField, usernameField, startButton);
         startButton.addClickListener(click -> {
             chat.setUsername(usernameField.getValue());
             remove(layout);
