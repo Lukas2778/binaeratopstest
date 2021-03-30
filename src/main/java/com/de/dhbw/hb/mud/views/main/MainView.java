@@ -101,7 +101,7 @@ public class MainView extends AppLayout {
         return new Tab[]{
                 createTab("Über uns", AboutView.class),
                 createTab("Dungeon erstellen", DungeonView.class),
-                createTab("CHAT", ChatView.class),
+                createTab("Chat", ChatView.class),
                 createTab("Spiel beitreten", Lobby.class)
         };
 //

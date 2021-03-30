@@ -20,12 +20,12 @@ public class Application extends SpringBootServletInitializer {
     }
 
     @Bean
-    UnicastProcessor<ChatMessage> publisher(){
+    UnicastProcessor<ChatMessage> publisher() {
         return UnicastProcessor.create();
     }
 
     @Bean
-    Flux<ChatMessage> messages(UnicastProcessor<ChatMessage> publisher){
+    Flux<ChatMessage> messages(UnicastProcessor<ChatMessage> publisher) {
         return publisher.replay(30).autoConnect();
     }
 }
