@@ -7,6 +7,7 @@ import com.de.dhbw.hb.mud.model.Avatar.Role;
 import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -14,12 +15,14 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import org.springframework.beans.factory.annotation.Autowired;
 
+
 //@Route(value = "Konfigurator", layout = MainView.class)
 @PageTitle("Avatar erstellen")
-public class AvatarErstellenView extends VerticalLayout {
+public class AvatarErstellenView extends Dialog {
 
     @Autowired
     private PlayerCharacterRepository repo;
+
 
     HorizontalLayout layout = new HorizontalLayout();
     VerticalLayout formular = new VerticalLayout();
@@ -58,6 +61,7 @@ public class AvatarErstellenView extends VerticalLayout {
         initFormula();
         layout.add(formular,
                 newAvatar);
+
         add(new H1("Konfiguriere deinen Avatar"),
                 layout);
     }
