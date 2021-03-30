@@ -13,6 +13,7 @@ import com.vaadin.flow.component.html.OrderedList;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -46,13 +47,13 @@ public class DungeonView extends VerticalLayout {
 
     private final Button raceButton = new Button("Mögliche Rassen");
 
-    private final Button roleButton = new Button("Mögliche Klassen");
+    private final Button roleButton = new Button("Mögliche Rollen");
 
     private final OrderedList roomsList = new OrderedList();
 
-    private Button addRoomButton = new Button("Füge einen Raum hinzu");
+    private final Button addRoomButton = new Button("Füge einen Raum hinzu");
 
-    private final Button commitButton =new Button("Hinzufügen");
+    private final Button commitButton =new Button("Dungeon erstellen");
 
     private final Dialog raceDialog = new Dialog();
 
@@ -60,13 +61,13 @@ public class DungeonView extends VerticalLayout {
 
     private final ArrayList<Room> addedRooms = new ArrayList<>();
 
-    private HashMap<Integer, Room> layoutToRoom = new HashMap<>();
+    private final HashMap<Long, Room> layoutToRoom = new HashMap<>();
 
-    private HashMap<String, Dialog> idToNPCDialog = new HashMap<>();
+    private final HashMap<Long, Dialog> idToNPCDialog = new HashMap<>();
 
-    private HashMap<String, Dialog> idToItemDialog = new HashMap<>();
+    private final HashMap<Long, Dialog> idToItemDialog = new HashMap<>();
 
-    private ArrayList<String> usedIDs = new ArrayList<>();
+    private final ArrayList<Long> usedIDs = new ArrayList<>();
 
     public DungeonView(DungeonRepository repoDungeon, RoomRepository repoRoom, RoleRepository repoRole,
                        RaceRepository repoRace, NPCRepository repoNPC, ItemRepository repoItem) {
@@ -81,12 +82,16 @@ public class DungeonView extends VerticalLayout {
 
         Button addRaceButton = new Button("Rasse hinzufügen");
         addRaceButton.addClickListener(event -> {
+            raceDialog.remove(addRaceButton);
             raceDialog.add(new HorizontalLayout(new TextField("Rasse:")));
+            raceDialog.add(addRaceButton);
         });
 
         Button addRoleButton = new Button("Rolle hinzufügen");
         addRoleButton.addClickListener(event -> {
+            roleDialog.remove(addRoleButton);
             roleDialog.add(new HorizontalLayout(new TextField("Rolle:")));
+            roleDialog.add(addRoleButton);
         });
 
         raceDialog.add(addRaceButton);
@@ -100,28 +105,29 @@ public class DungeonView extends VerticalLayout {
                 new HorizontalLayout(raceButton, roleButton),
                 roomsList,
                 commitButton);
+
+        addRoomToLayout();
     }
 
     private void initializeSettings() {
 
     }
 
-    private String getNewID() {
-        int i = 1;
-        while (usedIDs.contains(String.valueOf(i))) {
+    private Long getNewID() {
+        Long i = 1L;
+        while (usedIDs.contains(i)) {
             i++;
         }
-        String s = String.valueOf(i);
-        usedIDs.add(s);
-        return s;
+        usedIDs.add(i);
+        return i;
     }
 
     private void addRoomToLayout() {
         roomsList.remove(addRoomButton);
 
-        TextField number = new TextField("ID");
-        String iD = getNewID();
-        number.setValue(iD);
+        NumberField number = new NumberField("ID");
+        Long iD = getNewID();
+        number.setValue(Double.valueOf(iD));
         number.setReadOnly(true);
         number.setWidth("30px");
         TextField name = new TextField("Name:");
@@ -136,31 +142,22 @@ public class DungeonView extends VerticalLayout {
         idToNPCDialog.put(iD, npcDialog);
         idToItemDialog.put(iD, itemDialog);
 
-        Button npcAddButton = new Button("Hinzufügen", e-> {
-            npcDialog.add(new HorizontalLayout(
-                            new TextField("Name:"),
-                            new TextField("Rasse:"),
-                            new TextArea("Beschreibung:")
-                    ));
-        });
-        Button itemAddButton = new Button("Hinzufügen", e-> {
-            itemDialog.add(new HorizontalLayout(
-                    new TextField("Name:"),
-                    new Checkbox("Konsumierbar:"),
-                    new TextArea("Beschreibung:")
-            ));
-        });
+        Button npcAddButton = new Button("Hinzufügen", e-> npcDialog.add(new HorizontalLayout(
+                        new TextField("Name:"),
+                        new TextField("Rasse:"),
+                        new TextArea("Beschreibung:")
+        )));
+        Button itemAddButton = new Button("Hinzufügen", e-> itemDialog.add(new HorizontalLayout(
+                new TextField("Name:"),
+                new Checkbox("Konsumierbar:"),
+                new TextArea("Beschreibung:")
+        )));
 
         npcDialog.add(npcAddButton);
         itemDialog.add(itemAddButton);
 
         Button npcButton = new Button("NPCs", e -> npcDialog.open());
         Button itemButton = new Button("Items", e -> itemDialog.open());
-
-        north.setItems(usedIDs);
-        south.setItems(usedIDs);
-        west.setItems(usedIDs);
-        east.setItems(usedIDs);
 
         HorizontalLayout horLay = new HorizontalLayout(
                 number,
@@ -179,15 +176,27 @@ public class DungeonView extends VerticalLayout {
 
         addedRooms.add(r);
 
-        layoutToRoom.put(Integer.parseInt(iD), r);
+        layoutToRoom.put(iD, r);
 
         roomsList.add(addRoomButton);
+    }
+
+    private void updateLists() {
+        HorizontalLayout[] layouts = roomsList.getChildren().filter(e -> e instanceof HorizontalLayout).toArray(HorizontalLayout[]::new);
+
+        for (HorizontalLayout layout : layouts) {
+            ComboBox<String>[] components = layout.getChildren().filter(e -> e instanceof ComboBox).toArray(ComboBox[]::new);
+
+            for (ComboBox<String> component : components) {
+                component.setItems(usedIDs.stream().map(e -> e.toString()));
+            }
+        }
     }
 
     private void createRoom(HorizontalLayout horLay) {
         Component[] components = horLay.getChildren().toArray(Component[]::new);
 
-        Room r = layoutToRoom.get(Integer.parseInt(((TextField) components[0]).getValue()));
+        Room r = layoutToRoom.get((((NumberField) components[0]).getValue()).longValue());
         r.setName(((TextField) components[1]).getValue());
         repoRoom.save(r);
     }
@@ -207,26 +216,26 @@ public class DungeonView extends VerticalLayout {
 
         for (HorizontalLayout l1 : layouts) {
             Component[] components = l1.getChildren().toArray(Component[]::new);
-            Room r = layoutToRoom.get(Integer.parseInt(((TextField) components[0]).getValue()));
+            Room r = layoutToRoom.get(((NumberField) components[0]).getValue().longValue());
 
             if (!((ComboBox<String>) components[2]).isEmpty()) {
-                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[2]).getValue())).getId();
+                Long id = layoutToRoom.get(Long.parseLong(((ComboBox<String>) components[2]).getValue())).getId();
                 r.setNorthRoomID(id);
             }
             if (!((ComboBox<String>) components[3]).isEmpty()) {
-                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[3]).getValue())).getId();
+                Long id = layoutToRoom.get(Long.parseLong(((ComboBox<String>) components[3]).getValue())).getId();
                 r.setSouthRoomID(id);
             }
             if (!((ComboBox<String>) components[4]).isEmpty()) {
-                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[4]).getValue())).getId();
+                Long id = layoutToRoom.get(Long.parseLong(((ComboBox<String>) components[4]).getValue())).getId();
                 r.setWestRoomID(id);
             }
             if (!((ComboBox<String>) components[5]).isEmpty()) {
-                Long id = layoutToRoom.get(Integer.parseInt(((ComboBox<String>) components[5]).getValue())).getId();
+                Long id = layoutToRoom.get(Long.parseLong(((ComboBox<String>) components[5]).getValue())).getId();
                 r.setEastRoomID(id);
             }
-            saveNPCs(idToNPCDialog.get(((TextField) components[0]).getValue()), r.getId());
-            saveItems(idToItemDialog.get(((TextField) components[0]).getValue()), r.getId());
+            saveNPCs(idToNPCDialog.get(((NumberField) components[0]).getValue().longValue()), r.getId());
+            saveItems(idToItemDialog.get(((NumberField) components[0]).getValue().longValue()), r.getId());
             repoRoom.save(r);
         }
     }
@@ -305,6 +314,7 @@ public class DungeonView extends VerticalLayout {
 
         addRoomButton.addClickListener(e-> {
             addRoomToLayout();
+            updateLists();
         });
 
         commitButton.addClickListener(e->{
