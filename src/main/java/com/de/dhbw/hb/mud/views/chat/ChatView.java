@@ -1,7 +1,6 @@
 package com.de.dhbw.hb.mud.views.chat;
 
 import com.de.dhbw.hb.mud.model.ChatMessage;
-import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
@@ -23,13 +22,13 @@ public class ChatView extends Div {
 
     public ChatView(UnicastProcessor<ChatMessage> publisher,
                     Flux<ChatMessage> messages) {
-        chat=new ChatComponent(publisher,messages,false);
+        chat = new ChatComponent(publisher, messages, false);
         setSizeFull();
         askUsername();
 
     }
 
-    private void askUsername()  {
+    private void askUsername() {
         HorizontalLayout layout = new HorizontalLayout();
         Label labelField = new Label("Gib bitte einen Chat Alias ein:");
         TextField usernameField = new TextField();
@@ -40,7 +39,7 @@ public class ChatView extends Div {
             remove(layout);
             chat.showChat();
             add(chat);
-        } );
+        });
         add(layout);
     }
 
