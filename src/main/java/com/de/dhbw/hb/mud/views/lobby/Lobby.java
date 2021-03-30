@@ -4,6 +4,8 @@ import ch.qos.logback.core.status.Status;
 import com.de.dhbw.hb.mud.model.Dungeon;
 import com.de.dhbw.hb.mud.repository.DungeonRepository;
 import com.de.dhbw.hb.mud.service.registration.DungeonService;
+import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
+import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.sun.xml.bind.v2.model.core.ID;
 import com.vaadin.flow.component.button.Button;
@@ -59,6 +61,7 @@ public class Lobby extends VerticalLayout {
         joinGame.addClickListener(click -> {
             dungeonList.getSelectedItems().forEach(item -> {
                 Notification.show("Enter " + String.valueOf(item.getName()));
+                configureAvatar(item);
             });
         });
         deleteDungeon.addClickListener((click -> {
@@ -79,6 +82,11 @@ public class Lobby extends VerticalLayout {
         dungeonList.addClassName("dungeon-grid");
         dungeonList.setSizeFull();
         dungeonList.setColumns("name", "startRoom", "creatorID");
+    }
+
+    private void configureAvatar(Dungeon selectedDungeon) {
+        AvatarErstellenView avatarDialog = new AvatarErstellenView(selectedDungeon);
+        avatarDialog.open();
     }
 
 }

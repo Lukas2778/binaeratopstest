@@ -4,6 +4,7 @@ import com.de.dhbw.hb.mud.model.Avatar.Avatar;
 import com.de.dhbw.hb.mud.model.Avatar.Gender;
 import com.de.dhbw.hb.mud.model.Avatar.Race;
 import com.de.dhbw.hb.mud.model.Avatar.Role;
+import com.de.dhbw.hb.mud.model.Dungeon;
 import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -39,8 +40,7 @@ public class AvatarErstellenView extends Dialog {
     private TextField newAvatarRole = new TextField("Rolle");
     private TextField newAvatarGender = new TextField("Geschlecht");
 
-    public AvatarErstellenView(PlayerCharacterRepository repo){
-        this.repo = repo;
+    public AvatarErstellenView(Dungeon dungeon){
         layout.getStyle().set("border", "1px solid #9E9E9E");
         initAvatar();
         commit.addClickListener(e->{
@@ -51,7 +51,7 @@ public class AvatarErstellenView extends Dialog {
             newAvatarRole.setValue(newAvatar.getRole().name());
             newAvatarGender.setValue(newAvatar.getGender().name());
 
-            repo.save(newAvatar);
+            //repo.save(newAvatar);
             name.clear();
             raceCombobox.clear();
             roleCombobox.clear();
