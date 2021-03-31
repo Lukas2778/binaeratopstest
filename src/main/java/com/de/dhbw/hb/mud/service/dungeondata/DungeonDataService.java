@@ -3,6 +3,7 @@ package com.de.dhbw.hb.mud.service.dungeondata;
 
 import com.de.dhbw.hb.mud.model.Avatar.Avatar;
 import com.de.dhbw.hb.mud.model.Item;
+import com.de.dhbw.hb.mud.model.NPC;
 import com.de.dhbw.hb.mud.model.Room;
 import com.de.dhbw.hb.mud.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,15 @@ public class DungeonDataService {
     public ArrayList<Item> findItemsInRoom(int roomID){
         ArrayList<Item> result = new ArrayList<>();
         for (Item e: itemRepository.findAll()) {
+            if(roomID == e.getRoomID())
+                result.add(e);
+        }
+        return result;
+    }
+
+    public ArrayList<NPC> findNPCsInRoom(int roomID){
+        ArrayList<NPC> result = new ArrayList<>();
+        for (NPC e: npcRepository.findAll()) {
             if(roomID == e.getRoomID())
                 result.add(e);
         }
@@ -74,13 +84,11 @@ public class DungeonDataService {
 
     public Room getStartRoom(long dungeonID){
         //TODO korrekte lösung
-        Room returnr = null;
-        long flag=100000000;
         for (Room e: roomRepository.findAll()) {
-            if(flag < e.getId())
-                returnr  =e;
+            if(dungeonID == e.getDungeonID())
+                return e;
         }
-        return returnr;
+        return null;
     }
 
     public ArrayList<Room> getNeighborRooms(long roomID){
@@ -95,4 +103,5 @@ public class DungeonDataService {
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getSouthRoomID()).get());
         return result;
     }
+
 }
