@@ -11,9 +11,9 @@ import com.vaadin.flow.server.VaadinSession;
 @PageTitle("logout")
 public class LogoutView extends Div {
     public LogoutView() {
-        UI.getCurrent().getPage().setLocation("login");
         VaadinSession.getCurrent().getSession().invalidate();
         VaadinSession.getCurrent().close();
-
+        UI.getCurrent().getPage().setLocation("login");
+        UI.getCurrent().navigate("login");
     }
 }
