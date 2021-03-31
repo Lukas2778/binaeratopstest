@@ -53,6 +53,8 @@ public class AuthService {
         getRouts().stream()
         .forEach(r->
                 RouteConfiguration.forSessionScope().setRoute(r.getRout(),r.getView(), MainView.class));
+        getRoutsWithout().stream().forEach(r->
+                RouteConfiguration.forSessionScope().setRoute(r.getRout(),r.getView()));
     }
 
     public List<AuthorizedRoute> getRouts(){
@@ -67,6 +69,16 @@ public class AuthService {
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", LobbyView.class));
         routes.add(new AuthorizedRoute("game", "Game", GameView.class));
+        return routes;
+    }
+    public List<AuthorizedRoute> getRoutsWithout(){
+        ArrayList<AuthorizedRoute> routes =new ArrayList<>();
+
+        //routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
+        //routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
+        routes.add(new AuthorizedRoute("game", "Game", GameView.class));
+        //routes.add(new AuthorizedRoute("gamemaster", "Game", GameViewMaster.class));
+
         return routes;
     }
 

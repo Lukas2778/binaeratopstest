@@ -4,7 +4,6 @@ import com.de.dhbw.hb.mud.model.ChatMessage;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Div;
-import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
@@ -22,24 +21,23 @@ public class ChatView extends Div {
 
     public ChatView(UnicastProcessor<ChatMessage> publisher,
                     Flux<ChatMessage> messages) {
-        chat = new ChatComponent(publisher, messages, false);
+        chat=new ChatComponent(publisher,messages,false);
         setSizeFull();
         askUsername();
 
     }
 
-    private void askUsername() {
+    private void askUsername()  {
         HorizontalLayout layout = new HorizontalLayout();
-        Label labelField = new Label("Gib bitte einen Chat Alias ein:");
-        TextField usernameField = new TextField();
-        Button startButton = new Button("Chat starten");
-        layout.add(labelField, usernameField, startButton);
+        TextField usernameField = new TextField("Name festlegen");
+        Button startButton = new Button("Start chat");
+        layout.add(usernameField, startButton);
         startButton.addClickListener(click -> {
             chat.setUsername(usernameField.getValue());
             remove(layout);
             chat.showChat();
             add(chat);
-        });
+        } );
         add(layout);
     }
 
