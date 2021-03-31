@@ -76,7 +76,10 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
             controllsView.add(role,new HorizontalLayout(diceLimit,dice));
 
         } else{
-            chat.setUsername(VaadinSession.getCurrent().getAttribute(UserDto.class).getName());
+
+            long userNameID= VaadinSession.getCurrent().getAttribute(UserDto.class).getId();
+
+            chat.setUsername(dungeonDataService.getAvatarName(dungeonID, userNameID));
             TextField role=new TextField("Rolle");
             role.setValue(chat.getUsername());
             role.setReadOnly(true);

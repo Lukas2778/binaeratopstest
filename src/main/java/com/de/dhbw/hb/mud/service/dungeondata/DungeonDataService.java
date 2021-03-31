@@ -38,6 +38,16 @@ public class DungeonDataService {
         }
         return result;
     }
+
+    public ArrayList<Item> getRoom(int roomID){
+        ArrayList<Item> result = new ArrayList<>();
+        for (Item e: itemRepository.findAll()) {
+            if(roomID == e.getRoomID())
+                result.add(e);
+        }
+        return result;
+    }
+
     public boolean isDungeonMaster(long dungeonID, long playerID ){
         return dungeonRepository.findById(dungeonID).get().getCreatorID() == playerID;
     }
@@ -53,13 +63,13 @@ public class DungeonDataService {
         return result;
     }
 
-    public String AvatarName(long dungeonID,long userID){
-       ArrayList<Avatar> result= new ArrayList<>();
+    public String getAvatarName(long dungeonID, long userID){
+       String result = new String();
         for (Avatar e: playerCharacterRepository.findAll()) {
             if(e.getPlayerId()==userID && e.getDungeonId()==dungeonID)
-                return e.getName();
+                result = e.getName();
         }
-        return null;
+        return result;
     }
 
     public Room getStartRoom(long dungeonID){

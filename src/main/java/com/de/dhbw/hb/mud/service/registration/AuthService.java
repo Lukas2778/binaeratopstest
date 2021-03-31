@@ -60,8 +60,7 @@ public class AuthService {
     public List<AuthorizedRoute> getRouts(){
         ArrayList<AuthorizedRoute> routes =new ArrayList<>();
 
-        //routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
-        //routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
+
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
         routes.add(new AuthorizedRoute("chat","Hello World", ChatView.class));
         routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", CreateAvatarDialog.class));

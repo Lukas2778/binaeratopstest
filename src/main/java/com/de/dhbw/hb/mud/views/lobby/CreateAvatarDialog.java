@@ -67,8 +67,8 @@ public class CreateAvatarDialog extends Dialog {
 
         commit.addClickListener(e->{
             Avatar newAvatar = new Avatar(
-                    dungeon.getId(),
                     VaadinSession.getCurrent().getAttribute(UserDto.class).getId(),
+                    dungeon.getId(),
                     name.getValue(),
                     raceCombobox.getValue(),
                     roleCombobox.getValue(),
