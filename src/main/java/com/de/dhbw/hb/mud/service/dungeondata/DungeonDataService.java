@@ -34,5 +34,7 @@ public class DungeonDataService {
         }
         return result;
     }
-
+    public boolean isDungeonMaster(long dungeonID, long playerID ){
+        return dungeonRepository.findById(dungeonID).get().getCreatorID() == playerID;
+    }
 }

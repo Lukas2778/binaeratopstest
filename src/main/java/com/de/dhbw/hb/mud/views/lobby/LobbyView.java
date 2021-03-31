@@ -1,6 +1,7 @@
 package com.de.dhbw.hb.mud.views.lobby;
 
 import com.de.dhbw.hb.mud.model.Dungeon;
+import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.repository.DungeonRepository;
 import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.de.dhbw.hb.mud.repository.RaceRepository;
@@ -16,6 +17,7 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -65,15 +67,27 @@ public class LobbyView extends VerticalLayout {
         joinGame.addClickListener(click -> {
             dungeonList.getSelectedItems().forEach(item -> {
                 Notification.show("Entering " + String.valueOf(item.getName()));
-                configureAvatar(item);
+                if(VaadinSession.getCurrent().getAttribute(UserDto.class).getId() != item.getCreatorID()) {
+                    configureAvatar(item);
+                }else{
+
+                    UI.getCurrent().getPage().setLocation("game/" + item.getId());
+
+                }
             });
         });
         deleteDungeon.addClickListener(click -> {
             dungeonList.getSelectedItems().forEach(item -> {
                 if(confirmRemoveDungeon(item)) {
-                    dungeonService.delete(item);
-                    Notification.show(String.valueOf(item.getName()) + " removed");
-                    updateList();
+
+                    if( VaadinSession.getCurrent().getAttribute(UserDto.class).getId() == item.getCreatorID()){
+                        dungeonService.delete(item);
+                        Notification.show(String.valueOf(item.getName()) + " removed");
+                        updateList();
+                    }else{
+                        Notification.show("Nur der Dungeonmaster kann seinen Dungeon löschen.");
+
+                    }
                 }
             });
         });

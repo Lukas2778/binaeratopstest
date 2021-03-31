@@ -132,7 +132,7 @@ public class CreateAvatarDialog extends Dialog {
     }
 
     private void startGame(long dungeonID){
-        //UI.getCurrent().getPage().setLocation("game/" + dungeonID);
-        UI.getCurrent().getPage().setLocation("game");
+        UI.getCurrent().getPage().setLocation("game/" + dungeonID);
+        //UI.getCurrent().getPage().setLocation("game");
     }
 }
