@@ -6,13 +6,16 @@ import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.de.dhbw.hb.mud.repository.RaceRepository;
 import com.de.dhbw.hb.mud.repository.RoleRepository;
 import com.de.dhbw.hb.mud.service.registration.DungeonService;
+import com.de.dhbw.hb.mud.views.game.GameView;
 import com.vaadin.flow.component.Text;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
@@ -91,6 +94,7 @@ public class LobbyView extends VerticalLayout {
     private void configureAvatar(Dungeon selectedDungeon) {
         CreateAvatarDialog avatarDialog = new CreateAvatarDialog(selectedDungeon, repoAvatar, repoRace, repoRole);
         avatarDialog.open();
+
     }
 
     private Boolean confirmRemoveDungeon(Dungeon dungeon){
@@ -100,5 +104,7 @@ public class LobbyView extends VerticalLayout {
 
         return true;
     }
+
+
 
 }

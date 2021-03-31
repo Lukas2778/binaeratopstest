@@ -9,6 +9,7 @@ import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.de.dhbw.hb.mud.repository.RaceRepository;
 import com.de.dhbw.hb.mud.repository.RoleRepository;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -74,6 +75,7 @@ public class CreateAvatarDialog extends Dialog {
                     genderCombobox.getValue());
 
             aRepoAvatar.save(newAvatar);
+            startGame(dungeon.getId());
         });
         initFormula(dungeon);
 
@@ -127,5 +129,10 @@ public class CreateAvatarDialog extends Dialog {
             }
         }
         return result;
+    }
+
+    private void startGame(long dungeonID){
+        //UI.getCurrent().getPage().setLocation("game/" + dungeonID);
+        UI.getCurrent().getPage().setLocation("game");
     }
 }
