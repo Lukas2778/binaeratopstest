@@ -5,7 +5,7 @@ import com.de.dhbw.hb.mud.repository.UserRepository;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
 import com.de.dhbw.hb.mud.service.registration.exception.IllegalMailException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
-import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
+import com.de.dhbw.hb.mud.views.lobby.CreateAvatarDialog;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
@@ -62,7 +62,7 @@ public class AuthService {
         //routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("about","Hello World", AboutView.class));
         routes.add(new AuthorizedRoute("chat","Hello World", ChatView.class));
-        routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", AvatarErstellenView.class));
+        routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", CreateAvatarDialog.class));
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", LobbyView.class));

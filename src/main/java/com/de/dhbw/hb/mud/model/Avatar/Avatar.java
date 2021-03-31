@@ -1,5 +1,8 @@
 package com.de.dhbw.hb.mud.model.Avatar;
 
+import com.de.dhbw.hb.mud.model.Race;
+import com.de.dhbw.hb.mud.model.Role;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,14 +12,22 @@ public class Avatar {
     @GeneratedValue
     private Long id;
     private String name;
-    @Enumerated(EnumType.STRING)
+    @Transient
     private Race race;
-    @Enumerated(EnumType.STRING)
+    @Transient
     private Role role;
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public Avatar(String aName, Race aRace, Role aRole, Gender aGender){
+    private Long PlayerId;
+
+
+
+    private Long DungeonId;
+
+    public Avatar(Long aPlayerId, Long aDungeonId ,String aName, Race aRace, Role aRole, Gender aGender){
+        PlayerId = aPlayerId;
+        DungeonId = aDungeonId;
         name = aName;
         race = aRace;
         role = aRole;

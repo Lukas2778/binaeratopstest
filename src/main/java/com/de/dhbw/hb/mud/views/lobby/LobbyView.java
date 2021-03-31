@@ -1,30 +1,19 @@
 package com.de.dhbw.hb.mud.views.lobby;
 
-import ch.qos.logback.core.status.Status;
 import com.de.dhbw.hb.mud.model.Dungeon;
 import com.de.dhbw.hb.mud.repository.DungeonRepository;
+import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
+import com.de.dhbw.hb.mud.repository.RaceRepository;
+import com.de.dhbw.hb.mud.repository.RoleRepository;
 import com.de.dhbw.hb.mud.service.registration.DungeonService;
-import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
-import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
-import com.de.dhbw.hb.mud.views.main.MainView;
-import com.sun.xml.bind.v2.model.core.ID;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.listbox.ListBox;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.swing.*;
-import java.util.Hashtable;
 
 
 //@Route(value = "lobby", layout = MainView.class)
@@ -42,9 +31,18 @@ public class LobbyView extends VerticalLayout {
     @Autowired
     private DungeonService dungeonService;
     private DungeonRepository dungeonRepository;
+    @Autowired
+    private PlayerCharacterRepository repoAvatar;
+    @Autowired
+    private RaceRepository repoRace;
+    @Autowired
+    private RoleRepository repoRole;
 
-    public LobbyView(DungeonService dungeonService) {
+    public LobbyView(DungeonService dungeonService, PlayerCharacterRepository aRepoAvatar, RaceRepository aRaceRepo, RoleRepository aRoleRepo  ) {
         this.dungeonService = dungeonService;
+        this.repoAvatar = aRepoAvatar;
+        this.repoRace = aRaceRepo;
+        this.repoRole= aRoleRepo;
 
         addClassName("list-view-dungeons");
         setSizeFull();
@@ -91,7 +89,7 @@ public class LobbyView extends VerticalLayout {
     }
 
     private void configureAvatar(Dungeon selectedDungeon) {
-        AvatarErstellenView avatarDialog = new AvatarErstellenView(selectedDungeon);
+        CreateAvatarDialog avatarDialog = new CreateAvatarDialog(selectedDungeon, repoAvatar, repoRace, repoRole);
         avatarDialog.open();
     }
 
