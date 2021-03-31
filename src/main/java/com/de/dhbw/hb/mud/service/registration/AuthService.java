@@ -11,7 +11,7 @@ import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.game.GameView;
-import com.de.dhbw.hb.mud.views.lobby.Lobby;
+import com.de.dhbw.hb.mud.views.lobby.LobbyView;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.VaadinSession;
@@ -65,7 +65,7 @@ public class AuthService {
         routes.add(new AuthorizedRoute("AvatarErstellung","Avatar erstellen", AvatarErstellenView.class));
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
-        routes.add(new AuthorizedRoute("lobby","Lobby", Lobby.class));
+        routes.add(new AuthorizedRoute("lobby","Lobby", LobbyView.class));
         routes.add(new AuthorizedRoute("game", "Game", GameView.class));
         return routes;
     }

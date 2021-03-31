@@ -8,6 +8,7 @@ import com.de.dhbw.hb.mud.views.AvatarKonfigurator.AvatarErstellenView;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.main.MainView;
 import com.sun.xml.bind.v2.model.core.ID;
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
@@ -29,19 +30,20 @@ import java.util.Hashtable;
 //@Route(value = "lobby", layout = MainView.class)
 @CssImport("./views/dungeon/lobby-view.css")
 @PageTitle("Lobby")
-public class Lobby extends VerticalLayout {
+public class LobbyView extends VerticalLayout {
 
+    Text dungeonLobbyInfo=new Text("Wählen Sie einen Dungeon aus und tauchen Sie ein in die grenzenlose Welt der MUDs.");
     Grid<Dungeon> dungeonList = new Grid<>(Dungeon.class);
-    Button joinGame = new Button("Spiel beitreten");
+    Button joinGame = new Button("Dungeon beitreten");
     Button deleteDungeon = new Button("Dungeon löschen");
 
-    Hashtable<Long, Dungeon> dungeonHash = new Hashtable();
 
 
     @Autowired
     private DungeonService dungeonService;
+    private DungeonRepository dungeonRepository;
 
-    public Lobby(DungeonService dungeonService) {
+    public LobbyView(DungeonService dungeonService) {
         this.dungeonService = dungeonService;
 
         addClassName("list-view-dungeons");
@@ -49,6 +51,7 @@ public class Lobby extends VerticalLayout {
         configureDungeonList();
         configureButtons();
 
+        add(dungeonLobbyInfo);
         add(dungeonList);
         add(joinGame);
         add(deleteDungeon);
@@ -60,22 +63,25 @@ public class Lobby extends VerticalLayout {
         //Object selected = ((SingleSelectionModel) dungeonList.getSelectionModel());
         joinGame.addClickListener(click -> {
             dungeonList.getSelectedItems().forEach(item -> {
-                Notification.show("Enter " + String.valueOf(item.getName()));
+                Notification.show("Entering " + String.valueOf(item.getName()));
                 configureAvatar(item);
             });
         });
-        deleteDungeon.addClickListener((click -> {
-            Notification.show("Delete " + dungeonList.getSelectedItems().toString());
-        }));
+        deleteDungeon.addClickListener(click -> {
+            dungeonList.getSelectedItems().forEach(item -> {
+                if(confirmRemoveDungeon(item)) {
+                    dungeonService.delete(item);
+                    Notification.show(String.valueOf(item.getName()) + " removed");
+                    updateList();
+                }
+            });
+        });
     }
 
     private void updateList() {
         //myTest.setDataProvider(Dungeon::getName);
         //myTest.setItems(dungeonService.findAll());
         dungeonList.setItems(dungeonService.findAll());
-        for (Dungeon myDungeon : dungeonService.findAll()) {
-            dungeonHash.put(myDungeon.getId(), myDungeon);
-        }
     }
 
     private void configureDungeonList() {
@@ -87,6 +93,14 @@ public class Lobby extends VerticalLayout {
     private void configureAvatar(Dungeon selectedDungeon) {
         AvatarErstellenView avatarDialog = new AvatarErstellenView(selectedDungeon);
         avatarDialog.open();
+    }
+
+    private Boolean confirmRemoveDungeon(Dungeon dungeon){
+        Button confirmDeletion=new Button("Delete");
+        Button cancelDeletion=new Button("Abbrechen");
+        Text dungeonText=new Text("Möchten Sie den Dungeon " + dungeon.getName() + " wirklich löschen?");
+
+        return true;
     }
 
 }
