@@ -13,6 +13,8 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -43,22 +45,26 @@ public class CreateAvatarDialog extends Dialog {
     private ComboBox<Race> raceCombobox = new ComboBox<>("Rasse");
     private ComboBox<Role> roleCombobox = new ComboBox<>("Rolle");
     private ComboBox<Gender> genderCombobox = new ComboBox<>("Geschlecht");
-    private Button commit =new Button("Charakter erstellen");
+    private Button commit =new Button("Avatar erstellen");
 
     public CreateAvatarDialog(Dungeon dungeon, PlayerCharacterRepository aRepoAvatar, RaceRepository aRepoRace, RoleRepository aRepoRole){
         this.repoAvatar = aRepoAvatar;
         this.repoRace = aRepoRace;
         this.repoRole= aRepoRole;
 
+
         raceCombobox.setItemLabelGenerator(Race::getName);
         roleCombobox.setItemLabelGenerator(Role::getName);
 
+
+
         layout.getStyle().set("border", "1px solid #9E9E9E");
+        layout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+        formular.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.CENTER);
 
         initAvatar();
 
         commit.addClickListener(e->{
-            System.out.print(VaadinSession.getCurrent().getAttribute(UserDto.class).getId());
             Avatar newAvatar = new Avatar(
                     dungeon.getId(),
                     VaadinSession.getCurrent().getAttribute(UserDto.class).getId(),
@@ -67,14 +73,12 @@ public class CreateAvatarDialog extends Dialog {
                     roleCombobox.getValue(),
                     genderCombobox.getValue());
 
-
             aRepoAvatar.save(newAvatar);
         });
         initFormula(dungeon);
-        layout.add(formular);
 
-        add(new H1("Konfiguriere deinen Avatar"),
-                layout);
+        add(new H2("Erstelle deinen Avatar"),
+                formular);
     }
 
     private void initFormula(Dungeon ADungeon){
