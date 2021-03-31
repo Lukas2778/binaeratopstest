@@ -4,7 +4,7 @@ import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
 import com.de.dhbw.hb.mud.views.game.GameView;
-import com.de.dhbw.hb.mud.views.lobby.Lobby;
+import com.de.dhbw.hb.mud.views.lobby.LobbyView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -101,9 +101,9 @@ public class MainView extends AppLayout {
         //        .toArray(Component[]::new);
         return new Tab[]{
                 createTab("Über uns", AboutView.class),
+                createTab("Chat", ChatView.class),
                 createTab("Dungeon erstellen", DungeonView.class),
-                createTab("CHAT", ChatView.class),
-                createTab("Spiel beitreten", Lobby.class),
+                createTab("Dungeon beitreten", LobbyView.class),
                 createTab("game", GameView.class)
         };
 //

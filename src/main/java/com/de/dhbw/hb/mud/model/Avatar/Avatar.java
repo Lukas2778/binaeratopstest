@@ -1,5 +1,8 @@
 package com.de.dhbw.hb.mud.model.Avatar;
 
+import com.de.dhbw.hb.mud.model.Race;
+import com.de.dhbw.hb.mud.model.Role;
+
 import javax.persistence.*;
 
 @Entity
@@ -9,17 +12,24 @@ public class Avatar {
     @GeneratedValue
     private Long id;
     private String name;
-    @Enumerated(EnumType.STRING)
-    private Race race;
-    @Enumerated(EnumType.STRING)
-    private Role role;
+
+    private Long race;
+
+    private Long role;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    public Avatar(String aName, Race aRace, Role aRole, Gender aGender){
+    private Long PlayerId;
+
+    private Long DungeonId;
+
+    public Avatar(Long aPlayerId, Long aDungeonId ,String aName, Race aRace, Role aRole, Gender aGender){
+        PlayerId = aPlayerId;
+        DungeonId = aDungeonId;
         name = aName;
-        race = aRace;
-        role = aRole;
+        race = aRace.getId();
+        role = aRole.getId();
         gender = aGender;
     }
     public Avatar(){}
@@ -40,20 +50,36 @@ public class Avatar {
         this.name = name;
     }
 
-    public Race getRace() {
+    public Long getRace() {
         return race;
     }
 
-    public void setRace(Race race) {
+    public void setRace(Long race) {
         this.race = race;
     }
 
-    public Role getRole() {
+    public Long getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setRole(Long role) {
         this.role = role;
+    }
+
+    public Long getPlayerId() {
+        return PlayerId;
+    }
+
+    public void setPlayerId(Long playerId) {
+        PlayerId = playerId;
+    }
+
+    public Long getDungeonId() {
+        return DungeonId;
+    }
+
+    public void setDungeonId(Long dungeonId) {
+        DungeonId = dungeonId;
     }
 
     public Gender getGender() {

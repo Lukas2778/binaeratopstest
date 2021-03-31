@@ -23,4 +23,6 @@ public class DungeonService {
     public List<Dungeon> findAll() {
         return dungeonRepository.findAll();
     }
+
+    public void delete(Dungeon dungeon){this.dungeonRepository.delete(dungeon);}
 }
