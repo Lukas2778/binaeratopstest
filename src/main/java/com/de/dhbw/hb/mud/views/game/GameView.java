@@ -20,11 +20,12 @@ import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.VaadinSession;
-import java.util.Random;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.UnicastProcessor;
+
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @CssImport("./views/helloworld/game-view.css")
 @PageTitle("Game")

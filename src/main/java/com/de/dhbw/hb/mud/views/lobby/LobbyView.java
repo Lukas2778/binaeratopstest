@@ -7,7 +7,6 @@ import com.de.dhbw.hb.mud.repository.PlayerCharacterRepository;
 import com.de.dhbw.hb.mud.repository.RaceRepository;
 import com.de.dhbw.hb.mud.repository.RoleRepository;
 import com.de.dhbw.hb.mud.service.registration.DungeonService;
-import com.de.dhbw.hb.mud.views.game.GameView;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -16,7 +15,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
 

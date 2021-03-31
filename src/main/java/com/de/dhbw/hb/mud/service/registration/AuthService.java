@@ -68,16 +68,13 @@ public class AuthService {
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", LobbyView.class));
-        routes.add(new AuthorizedRoute("game", "Game", GameView.class));
         return routes;
     }
     public List<AuthorizedRoute> getRoutsWithout(){
         ArrayList<AuthorizedRoute> routes =new ArrayList<>();
 
-        //routes.add(new AuthorizedRoute("helloworld","Hello World", HelloWorldView.class));
-        //routes.add(new AuthorizedRoute("test","Hello World", TestView.class));
         routes.add(new AuthorizedRoute("game", "Game", GameView.class));
-        //routes.add(new AuthorizedRoute("gamemaster", "Game", GameViewMaster.class));
+
 
         return routes;
     }
