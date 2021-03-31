@@ -31,7 +31,7 @@ public class DungeonDataService {
 
 
 
-    public ArrayList<Item> findItemsInRoom(int roomID){
+    public ArrayList<Item> findItemsInRoom(long roomID){
         ArrayList<Item> result = new ArrayList<>();
         for (Item e: itemRepository.findAll()) {
             if(roomID == e.getRoomID())
@@ -40,7 +40,7 @@ public class DungeonDataService {
         return result;
     }
 
-    public ArrayList<NPC> findNPCsInRoom(int roomID){
+    public ArrayList<NPC> findNPCsInRoom(long roomID){
         ArrayList<NPC> result = new ArrayList<>();
         for (NPC e: npcRepository.findAll()) {
             if(roomID == e.getRoomID())
@@ -49,7 +49,7 @@ public class DungeonDataService {
         return result;
     }
 
-    public ArrayList<Item> getRoom(int roomID){
+    public ArrayList<Item> getRoom(long roomID){
         ArrayList<Item> result = new ArrayList<>();
         for (Item e: itemRepository.findAll()) {
             if(roomID == e.getRoomID())
@@ -103,5 +103,4 @@ public class DungeonDataService {
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getSouthRoomID()).get());
         return result;
     }
-
 }

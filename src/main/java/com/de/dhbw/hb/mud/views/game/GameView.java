@@ -1,6 +1,7 @@
 package com.de.dhbw.hb.mud.views.game;
 
 import com.de.dhbw.hb.mud.model.ChatMessage;
+import com.de.dhbw.hb.mud.model.Room;
 import com.de.dhbw.hb.mud.model.UserDto;
 import com.de.dhbw.hb.mud.service.dungeondata.DungeonDataService;
 import com.de.dhbw.hb.mud.views.chat.ChatComponent;
@@ -33,6 +34,7 @@ public class GameView extends VerticalLayout implements HasUrlParameter<Long>{
 
     ChatComponent chat;
     private long dungeonID;
+    private Room currentRoom;
 
     @Autowired
     DungeonDataService dungeonDataService;
@@ -48,7 +50,7 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
                     Flux<ChatMessage> messages, DungeonDataService dungeonDataService) {
 
         this.dungeonDataService = dungeonDataService;
-
+        this.currentRoom = dungeonDataService.getStartRoom(dungeonID);
 
         removeAll();;
         chat =new ChatComponent(publisher,messages,true);
@@ -96,7 +98,8 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
             dungeonDataService.findItemsInRoom(12).stream().map(item -> item.getName()).forEach(sB::append);
 
             //Problem -> Keine Absätze Möglich
-            String result = dungeonDataService.findItemsInRoom(12).stream().map(item -> item.getName()).collect(Collectors.joining("\n"));
+            String itemInRoom = dungeonDataService.findItemsInRoom(currentRoom.getId()).stream().map(item -> item.getName()).collect(Collectors.joining(", "));
+            String npcInRoom = dungeonDataService.findNPCsInRoom(currentRoom.getId()).stream().map(npc -> npc.getName()).collect(Collectors.joining(", "));
 
 
 //            private void itemsAusgeben() {
@@ -112,12 +115,28 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
 //            }
 
 
+            if(itemInRoom.isEmpty()){
+                itemInRoom = "keine Gegenstände";
+            }
 
-            Button Umschauen = new Button("Umschauen", e -> publisher.onNext(new ChatMessage("Items: ", result)));
-            Button Aufheben = new Button("Aufheben", e -> publisher.onNext(new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
+            if(npcInRoom.isEmpty()){
+                npcInRoom = "Du bist alleine";
+            }else{
+                String temp = npcInRoom;
+                npcInRoom = "Dir fällt auf, dass du nicht alleine bist "  + temp + " kannst du erkennen";
+            }
+
+            String finalItemInRoom = itemInRoom;
+
+            Button UmschauenItems = new Button("Gegenstände suchen", e -> publisher.onNext(new ChatMessage("INFO", "Du befindest dich in "  + currentRoom.getName() +
+                    " und beim Umschauen erblickst du " + finalItemInRoom + " auf dem Boden liegen.")));
+
+            String finalNpcInRoom = npcInRoom;
+            Button UmschauenNPC = new Button("NPC suchen", e -> publisher.onNext(new ChatMessage("INFO: ",
+                                                                                                 finalNpcInRoom)));
             Button Ansprechen = new Button("Aufheben", e -> publisher.onNext(new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
             Button Bewegen = new Button("Aufheben", e -> publisher.onNext(new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
-            ButtonView.add( Umschauen, Aufheben );
+            ButtonView.add( UmschauenItems, UmschauenNPC );
 
         }
 
@@ -152,4 +171,6 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
     {
         this.dungeonID = dungeonID;
     }
+
+
 }
