@@ -345,10 +345,72 @@ public class DungeonView extends VerticalLayout {
             nameField.focus();
             return false;
         }
+        if (!validateRace()) {
+            return false;
+        }
+        if (!validateRole()) {
+            return false;
+        }
+        if (!validateRoom()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateRace() {
+        HorizontalLayout[] layouts = raceDialog.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+        if (layouts.length == 0) {
+            Notification.show("Es muss mindestens eine Rasse geben");
+            return false;
+        }
+        for (HorizontalLayout layout : layouts) {
+            TextField[] fields = layout.getChildren()
+                    .filter(component -> component instanceof TextField)
+                    .toArray(TextField[]::new);
+            if (fields[0].isEmpty()) {
+                Notification.show("Alle mögliche Rassen müssen einen Namen haben");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean validateRole() {
+        HorizontalLayout[] layouts = roleDialog.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+        if (layouts.length == 0) {
+            Notification.show("Es muss mindestens eine Rolle geben");
+            return false;
+        }
+        for (HorizontalLayout layout : layouts) {
+            TextField[] fields = layout.getChildren()
+                    .filter(component -> component instanceof TextField)
+                    .toArray(TextField[]::new);
+            if (fields[0].isEmpty()) {
+                Notification.show("Alle mögliche Rollen müssen einen Namen haben");
+                return false;
+            }
+        }
         return true;
     }
 
     private boolean validateRoom() {
+        HorizontalLayout[] layouts = roomsList.getChildren()
+                .filter(component -> component instanceof HorizontalLayout)
+                .toArray(HorizontalLayout[]::new);
+        for (HorizontalLayout layout : layouts) {
+            TextField[] fields = layout.getChildren()
+                    .filter(component -> component instanceof TextField)
+                    .toArray(TextField[]::new);
+            if (fields[0].isEmpty()) {
+                fields[0].focus();
+                Notification.show("Alle Räume müssen einen Namen haben");
+                return false;
+            }
+        }
         return true;
     }
 }
