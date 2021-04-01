@@ -9,6 +9,7 @@ import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -36,6 +37,8 @@ public class GameView extends VerticalLayout implements HasUrlParameter<Long>{
     private long dungeonID;
     private Room currentRoom;
 
+    private ComboBox<Room> moveCombobox = new ComboBox<>("bewegen");
+
     @Autowired
     DungeonDataService dungeonDataService;
 
@@ -56,6 +59,10 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
         chat =new ChatComponent(publisher,messages,true);
 
         //TODO Später mit dem Parameter Dungeonmaster ändern
+
+        moveCombobox.setItemLabelGenerator(Room :: getName);
+        moveCombobox.setItems(dungeonDataService.getNeighborRooms(currentRoom.getId()));
+
 
         VerticalLayout controllsView =new VerticalLayout();
         HorizontalLayout ButtonView =new HorizontalLayout();
@@ -98,8 +105,8 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
             dungeonDataService.findItemsInRoom(12).stream().map(item -> item.getName()).forEach(sB::append);
 
             //Problem -> Keine Absätze Möglich
-            String itemInRoom = dungeonDataService.findItemsInRoom(currentRoom.getId()).stream().map(item -> item.getName()).collect(Collectors.joining(", "));
-            String npcInRoom = dungeonDataService.findNPCsInRoom(currentRoom.getId()).stream().map(npc -> npc.getName()).collect(Collectors.joining(", "));
+            //String itemInRoom = dungeonDataService.findItemsInRoom(currentRoom.getId()).stream().map(item -> item.getName()).collect(Collectors.joining(", "));
+
 
 
 //            private void itemsAusgeben() {
@@ -115,28 +122,39 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
 //            }
 
 
-            if(itemInRoom.isEmpty()){
-                itemInRoom = "keine Gegenstände";
-            }
+            //if(itemInRoom.isEmpty()){
+            //    itemInRoom = "keine Gegenstände";
+            //}
+            //String npcInRoom = dungeonDataService.findNPCsInRoom(currentRoom.getId()).stream().map(npc -> npc.getName()).collect(Collectors.joining(", "));
+            //if(npcInRoom.isEmpty()){
+            //    npcInRoom = "Du bist alleine";
+            //}else{
+            //    String temp = npcInRoom;
+            //    npcInRoom = "Dir fällt auf, dass du nicht alleine bist "  + temp + " kannst du erkennen";
+            //}
 
-            if(npcInRoom.isEmpty()){
-                npcInRoom = "Du bist alleine";
-            }else{
-                String temp = npcInRoom;
-                npcInRoom = "Dir fällt auf, dass du nicht alleine bist "  + temp + " kannst du erkennen";
-            }
+            //String finalItemInRoom = itemInRoom;
 
-            String finalItemInRoom = itemInRoom;
+            Button UmschauenItems = new Button("Gegenstände suchen", e -> publisher.onNext(
+                    new ChatMessage("INFO", "Du befindest dich in "  + currentRoom.getName() +
+                    " und beim Umschauen erblickst du " + findItems() + " auf dem Boden liegen.")));
 
-            Button UmschauenItems = new Button("Gegenstände suchen", e -> publisher.onNext(new ChatMessage("INFO", "Du befindest dich in "  + currentRoom.getName() +
-                    " und beim Umschauen erblickst du " + finalItemInRoom + " auf dem Boden liegen.")));
+            //String finalNpcInRoom = npcInRoom;
+            Button UmschauenNPC = new Button("NPC suchen", e -> publisher.onNext(
+                    new ChatMessage("INFO",findNPC())));
+            Button Ansprechen = new Button("Aufheben", e -> publisher.onNext(
+                    new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
+            Button Bewegen = new Button("Aufheben", e -> publisher.onNext(
+                    new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
 
-            String finalNpcInRoom = npcInRoom;
-            Button UmschauenNPC = new Button("NPC suchen", e -> publisher.onNext(new ChatMessage("INFO: ",
-                                                                                                 finalNpcInRoom)));
-            Button Ansprechen = new Button("Aufheben", e -> publisher.onNext(new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
-            Button Bewegen = new Button("Aufheben", e -> publisher.onNext(new ChatMessage("Items: ", dungeonDataService.findItemsInRoom(12).get(0).getName())));
+
             ButtonView.add( UmschauenItems, UmschauenNPC );
+
+
+            controllsView.add(ButtonView,moveCombobox,new Button("laufe nach" , e->{
+                currentRoom = moveCombobox.getValue();
+                moveCombobox.setItems(dungeonDataService.getNeighborRooms(currentRoom.getId()));
+            }));
 
         }
 
@@ -153,7 +171,7 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
         SplitLayout innerLayout = new SplitLayout();
         innerLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         innerLayout.addToPrimary(secondLabel);
-        innerLayout.addToSecondary(controllsView, ButtonView);
+        innerLayout.addToSecondary(controllsView);
         innerLayout.setSizeFull();
 
         SplitLayout layout = new SplitLayout();
@@ -162,7 +180,7 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
         layout.setSizeFull();
 
 
-        add(new HorizontalLayout(new Text("Dungeonname"), new Button("Spiel verlassen",
+        add(new HorizontalLayout(new Text(dungeonDataService.getDungeonName(dungeonID)), new Button("Spiel verlassen",
                 e-> UI.getCurrent().navigate("about"))),layout);
     }
 
@@ -172,5 +190,25 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
         this.dungeonID = dungeonID;
     }
 
+    private String findItems(){
+        String result=  dungeonDataService.findItemsInRoom(currentRoom.getId()).stream().map(item -> item.getName())
+                .collect(Collectors.joining(", "));
+        if(result.isEmpty()){
+            result = "keine Gegenstände";
+        }
+        return result;
+    }
+
+    private  String findNPC(){
+        String npcInRoom = dungeonDataService.findNPCsInRoom(currentRoom.getId()).stream().map(npc
+                -> npc.getName()).collect(Collectors.joining(", "));
+        if(npcInRoom.isEmpty()){
+            npcInRoom = "Du bist alleine!";
+        }else{
+            String temp = npcInRoom;
+            npcInRoom = "Dir fällt auf, dass du nicht alleine bist. "  + temp + " kannst du erkennen.";
+        }
+        return npcInRoom;
+    }
 
 }

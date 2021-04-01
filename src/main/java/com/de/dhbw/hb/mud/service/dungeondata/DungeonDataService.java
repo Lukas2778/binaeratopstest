@@ -40,6 +40,10 @@ public class DungeonDataService {
         return result;
     }
 
+    public String getDungeonName(long dungeonID){
+        return dungeonRepository.findById(dungeonID).get().getName();
+    }
+
     public ArrayList<NPC> findNPCsInRoom(long roomID){
         ArrayList<NPC> result = new ArrayList<>();
         for (NPC e: npcRepository.findAll()) {
@@ -95,11 +99,11 @@ public class DungeonDataService {
         ArrayList<Room> result= new ArrayList<>();
         if(roomRepository.findById(roomID).get().getEastRoomID() !=null)
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getEastRoomID()).get());
-        if(roomRepository.findById(roomID).get().getWestRoom() !=null)
+        if(roomRepository.findById(roomID).get().getWestRoomID() !=null)
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getWestRoomID()).get());
-        if(roomRepository.findById(roomID).get().getNorthRoom() !=null)
+        if(roomRepository.findById(roomID).get().getNorthRoomID() !=null)
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getNorthRoomID()).get());
-        if(roomRepository.findById(roomID).get().getSouthRoom() !=null)
+        if(roomRepository.findById(roomID).get().getSouthRoomID() !=null)
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getSouthRoomID()).get());
         return result;
     }
