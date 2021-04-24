@@ -3,6 +3,7 @@ package com.de.dhbw.hb.mud.model;
 
 import org.apache.commons.codec.digest.DigestUtils;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ public class UserDto {
     @GeneratedValue
     private long id;
 
+    @Column(unique = true)
     @NotEmpty
     private String name;
 

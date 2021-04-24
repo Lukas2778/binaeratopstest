@@ -201,7 +201,7 @@ public GameView(UnicastProcessor<ChatMessage> publisher,
 
     private  String findNPC(){
         String npcInRoom = dungeonDataService.findNPCsInRoom(currentRoom.getId()).stream().map(npc
-                -> npc.getName()).collect(Collectors.joining(", "));
+                ->  npc.getName()).collect(Collectors.joining(", "));
         if(npcInRoom.isEmpty()){
             npcInRoom = "Du bist alleine!";
         }else{

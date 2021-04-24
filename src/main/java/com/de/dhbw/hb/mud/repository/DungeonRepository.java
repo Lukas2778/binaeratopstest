@@ -10,4 +10,5 @@ import java.util.List;
 public interface DungeonRepository extends JpaRepository<Dungeon, Long> {
     @Override
     List<Dungeon> findAll();
+
 }

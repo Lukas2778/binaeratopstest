@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DungeonDataService {
@@ -106,5 +107,9 @@ public class DungeonDataService {
         if(roomRepository.findById(roomID).get().getSouthRoomID() !=null)
             result.add(roomRepository.findById(roomRepository.findById(roomID).get().getSouthRoomID()).get());
         return result;
+    }
+
+    public List<Room> getAllRooms(long id){
+        return roomRepository.findByDungeonID(id);
     }
 }

@@ -13,4 +13,6 @@ public interface UserRepository extends JpaRepository<UserDto,Long> {
     @Override
     List<UserDto>findAll();
 
+    UserDto findByName(String name);
+
 }

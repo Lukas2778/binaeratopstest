@@ -5,6 +5,7 @@ import com.de.dhbw.hb.mud.repository.UserRepository;
 import com.de.dhbw.hb.mud.service.registration.exception.AuthException;
 import com.de.dhbw.hb.mud.service.registration.exception.IllegalMailException;
 import com.de.dhbw.hb.mud.service.registration.exception.RegisterException;
+import com.de.dhbw.hb.mud.views.MapTest;
 import com.de.dhbw.hb.mud.views.lobby.CreateAvatarDialog;
 import com.de.dhbw.hb.mud.views.Konfigurator.AvatarKonfiguratorView;
 import com.de.dhbw.hb.mud.views.about.AboutView;
@@ -16,6 +17,7 @@ import com.de.dhbw.hb.mud.views.main.MainView;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.VaadinSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,16 +29,19 @@ public class AuthService {
     @Autowired
     private UserRepository repo;
 
+    @Autowired
+    private MailService mailService;
+
     public void authenticate(String name, String password) throws AuthException {
         List<UserDto> all=repo.findAll();
-        UserDto user = null;
-        for (UserDto u:
-             all) {
-            if (u.getName() .equals(name)){
-                user =u;
-                break;
-            }
-        }
+        UserDto user =repo.findByName(name);
+        //for (UserDto u:
+        //     all) {
+        //    if (u.getName() .equals(name)){
+        //        user =u;
+        //        break;
+        //    }
+        //}
 
         if(user!=null && user.checkPassword(password)){
             VaadinSession.getCurrent().setAttribute(UserDto.class, user);
@@ -67,6 +72,7 @@ public class AuthService {
         routes.add(new AuthorizedRoute("Konfigurator","Avatar konfigurieren", AvatarKonfiguratorView.class));
         routes.add(new AuthorizedRoute("Dungeon","Dungeon", DungeonView.class));
         routes.add(new AuthorizedRoute("lobby","Lobby", LobbyView.class));
+        routes.add(new AuthorizedRoute("map","Map", MapTest.class));
         return routes;
     }
     public List<AuthorizedRoute> getRoutsWithout(){
@@ -78,14 +84,19 @@ public class AuthService {
         return routes;
     }
 
-    public void register(String username, String password, String eMail) throws RegisterException, IllegalMailException {
-        List<UserDto> list =repo.findAll();
-        for (UserDto user:
-             list) {
-            if(user.getName().equals(username)){
-                throw new RegisterException();
-            }
-        }
+    public void register(String username, String password, String eMail) throws RegisterException, IllegalMailException, MailException {
+        //List<UserDto> list =repo.findAll();
+        //for (UserDto user: list) {
+        //    if(user.getName().equals(username)){
+        //        throw new RegisterException();
+        //    }
+        //}
+        if(repo.findByName(username)!=null)
+            throw new RegisterException();
+
+
+        mailService.sendEMail(eMail,username);
+
         try {
             repo.save(new UserDto(username,eMail,password));
         }catch (Exception e){

@@ -1,9 +1,9 @@
 package com.de.dhbw.hb.mud.views.main;
 
+import com.de.dhbw.hb.mud.views.MapTest;
 import com.de.dhbw.hb.mud.views.about.AboutView;
 import com.de.dhbw.hb.mud.views.chat.ChatView;
 import com.de.dhbw.hb.mud.views.dungeons.DungeonView;
-import com.de.dhbw.hb.mud.views.game.GameView;
 import com.de.dhbw.hb.mud.views.lobby.LobbyView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
@@ -103,7 +103,8 @@ public class MainView extends AppLayout {
                 createTab("Über uns", AboutView.class),
                 createTab("Chat", ChatView.class),
                 createTab("Dungeon erstellen", DungeonView.class),
-                createTab("Dungeon beitreten", LobbyView.class)
+                createTab("Dungeon beitreten", LobbyView.class),
+                createTab("test Map", MapTest.class)
         };
 //
     }

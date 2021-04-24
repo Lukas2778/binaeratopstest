@@ -11,4 +11,6 @@ public interface RoomRepository extends CrudRepository<Room, Long> {
 
     @Override
     List<Room> findAll();
+
+    List<Room> findByDungeonID(long dungeonID);
 }
